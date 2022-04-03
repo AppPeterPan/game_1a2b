@@ -50,7 +50,6 @@ class _AppBodyState extends State<AppBody> {
     super.initState();
     guess = [];
     ans = answer();
-    print(ans);
   }
 
   @override
@@ -67,11 +66,12 @@ class _AppBodyState extends State<AppBody> {
                     color: Colors.grey,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 10, vertical: 5),
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        '${idx+1}. ${guess[idx].guess} ${guess[idx].a}A${guess[idx].b}B',
-                        style: const TextStyle(fontSize: 30, color: Colors.white),
+                        '${idx + 1}. ${guess[idx].guess} ${guess[idx].a}A${guess[idx].b}B',
+                        style:
+                            const TextStyle(fontSize: 25, color: Colors.white),
                       ),
                     ),
                   );
@@ -101,10 +101,23 @@ class _AppBodyState extends State<AppBody> {
                   )),
             ),
             IconButton(
-                onPressed: () {
-                  if (_inputController.text.length == 4) {
+                onPressed: () {String input = _inputController.text;
+                  if (input.length == 4&&!inputRepeat(input)) {
+                    int a =0;
+                    int b = 0;
+                    for(int i1=0;i1<4;i1++){
+                      for(int i2=0;i2<4;i2++){
+                        if(input[i1]==ans[i2]){
+                          if(i1==i2){
+                            a++;
+                          }else{
+                            b++;
+                          }
+                        }
+                      }
+                    }
                     setState(() {
-                      guess.add(_GuessData(_inputController.text, 0, 0));
+                      guess.add(_GuessData(_inputController.text, a, b));
                       _inputController.clear();
                     });
                     Future.delayed(const Duration(milliseconds: 16)).then(
@@ -122,6 +135,7 @@ class _AppBodyState extends State<AppBody> {
     );
   }
 
+  //取得隨機答案
   String answer() {
     String ansString = '';
     List numList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -131,6 +145,16 @@ class _AppBodyState extends State<AppBody> {
       numList.removeAt(ranNum);
     }
     return ansString;
+  }
+
+  //判斷書入內容是否重複
+  bool inputRepeat(String input) {
+    for (int i1 = 0; i1 < 3; i1++) {
+      for (int i2 = i1 + 1; i2 < 4; i2++) {
+        if (input[i1] == input[i2]) return true;
+      }
+    }
+    return false;
   }
 }
 
