@@ -42,7 +42,6 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> {
   List<_GuessData> guess = [];
   String ans = '';
-  bool sendDisable = true;
   final TextEditingController _inputController = TextEditingController();
   final ScrollController _listController = ScrollController();
   @override
@@ -66,7 +65,7 @@ class _AppBodyState extends State<AppBody> {
                     color: Colors.grey,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
+                          horizontal: 10, vertical: 10),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         '${idx + 1}. ${guess[idx].guess} ${guess[idx].a}A${guess[idx].b}B',
@@ -86,48 +85,24 @@ class _AppBodyState extends State<AppBody> {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp('[0-9]'))
                   ],
-                  onChanged: (data) {
-                    setState(() {
-                      sendDisable = _inputController.text.length < 4;
-                    });
-                  },
                   keyboardType: TextInputType.number,
                   controller: _inputController,
                   maxLength: 4,
+                  style: const TextStyle(fontSize: 20),
+                  onEditingComplete: () {
+                    inputComplete();
+                  },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '4 numbers',
+                    labelText: '4 unique numbers',
                     hintText: 'Ex: 1234',
                   )),
             ),
             IconButton(
-                onPressed: () {String input = _inputController.text;
-                  if (input.length == 4&&!inputRepeat(input)) {
-                    int a =0;
-                    int b = 0;
-                    for(int i1=0;i1<4;i1++){
-                      for(int i2=0;i2<4;i2++){
-                        if(input[i1]==ans[i2]){
-                          if(i1==i2){
-                            a++;
-                          }else{
-                            b++;
-                          }
-                        }
-                      }
-                    }
-                    setState(() {
-                      guess.add(_GuessData(_inputController.text, a, b));
-                      _inputController.clear();
-                    });
-                    Future.delayed(const Duration(milliseconds: 16)).then(
-                        (value) => _listController.animateTo(
-                            _listController.position.maxScrollExtent,
-                            duration: const Duration(milliseconds: 200),
-                            curve: Curves.easeOutQuart));
-                  }
+                onPressed: () {
+                  inputComplete();
                 },
-                color: sendDisable ? Colors.black : Colors.red,
+                color: Colors.red,
                 icon: const Icon(Icons.send)),
           ],
         )
@@ -155,6 +130,72 @@ class _AppBodyState extends State<AppBody> {
       }
     }
     return false;
+  }
+
+  void inputComplete() {
+    String input = _inputController.text;
+    if (input.length < 4) {
+      showSnackBar('Input must be 4 numbers.');
+    } else {
+      if (inputRepeat(input)) {
+        showSnackBar('Input must be unique.');
+      } else {
+        int a = 0;
+        int b = 0;
+        for (int i1 = 0; i1 < 4; i1++) {
+          for (int i2 = 0; i2 < 4; i2++) {
+            if (input[i1] == ans[i2]) {
+              if (i1 == i2) {
+                a++;
+              } else {
+                b++;
+              }
+            }
+          }
+        }
+
+        setState(() {
+          guess.add(_GuessData(_inputController.text, a, b));
+          _inputController.clear();
+        });
+        Future.delayed(const Duration(milliseconds: 16)).then((value) =>
+            _listController.animateTo(_listController.position.maxScrollExtent,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOutQuart));
+        if (a == 4) {
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Your answer $input is correct!'),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text("OK"))
+                  ],
+                );
+              }).then((value) {
+            ans = answer();
+            setState(() {
+              guess = [];
+            });
+            showSnackBar('Play it again!');
+          });
+        }
+      }
+    }
+  }
+
+  void showSnackBar(String msg) {
+    var snackBar = SnackBar(
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'dismiss',
+        onPressed: () {},
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
 
