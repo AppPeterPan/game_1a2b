@@ -54,43 +54,45 @@ class AppBodyState extends State<AppBody> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           color: const Color.fromARGB(255, 188, 235, 236),
-          child: TextField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp('[0-9]'))
-              ],
-              keyboardType: TextInputType.number,
-              controller: _inputController,
-              maxLength: 4,
-              style: const TextStyle(fontSize: 20),
-              onEditingComplete: () {
-                inputComplete();
-              },
-              onChanged: (txt) {
-                setState(() {});
-              },
-              decoration: InputDecoration(
-                counterText: '',
-                suffixIcon: IconButton(
-                    color: _inputController.text.length == 4
-                        ? Colors.red
-                        : Colors.grey,
-                    onPressed: () {
-                      if (_inputController.text.length == 4) {
-                        inputComplete();
-                      } else {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      }
-                    },
-                    icon: Icon(
-                      _inputController.text.length == 4
-                          ? Icons.send
-                          : Icons.keyboard,
-                      size: 30,
-                    )),
-                border: const OutlineInputBorder(),
-                labelText: '4 unique numbers',
-                hintText: 'Ex: 1234',
-              )),
+          child: SafeArea(
+            child: TextField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9]'))
+                ],
+                keyboardType: TextInputType.number,
+                controller: _inputController,
+                maxLength: 4,
+                style: const TextStyle(fontSize: 20),
+                onEditingComplete: () {
+                  inputComplete();
+                },
+                onChanged: (txt) {
+                  setState(() {});
+                },
+                decoration: InputDecoration(
+                  counterText: '',
+                  suffixIcon: IconButton(
+                      color: _inputController.text.length == 4
+                          ? Colors.red
+                          : Colors.grey,
+                      onPressed: () {
+                        if (_inputController.text.length == 4) {
+                          inputComplete();
+                        } else {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        }
+                      },
+                      icon: Icon(
+                        _inputController.text.length == 4
+                            ? Icons.send
+                            : Icons.keyboard,
+                        size: 30,
+                      )),
+                  border: const OutlineInputBorder(),
+                  labelText: '4 unique numbers',
+                  hintText: 'Ex: 1234',
+                )),
+          ),
         )
       ],
     );
