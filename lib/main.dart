@@ -12,6 +12,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: AppView(),
+      color: Colors.blue,
+      title: '1A2B Game',
     );
   }
 }
@@ -26,35 +28,46 @@ class AppView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('1A2B'),
         actions: [
-          IconButton(
-              tooltip: 'Restart the game',
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Restart the game'),
-                        content: const Text(
-                            'Restarting will replace the answer and delete the guess record.'),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text(
-                                "Restart",
-                                style: TextStyle(color: Colors.red),
-                              )),
-                          TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text("Cancel"))
-                        ],
-                      );
-                    }).then((value) {
-                  if (value) {
-                    body.restart();
-                  }
-                });
-              },
-              icon: const Icon(Icons.restart_alt))
+          PopupMenuButton(
+            itemBuilder: (context) => <PopupMenuEntry>[
+              const PopupMenuItem(
+                child: Text('Restart'),
+                value: "restart",
+              )
+            ],
+            onSelected: (val) {
+              switch (val) {
+                case "restart":
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Restart the game'),
+                          content: const Text(
+                              'Restarting will replace the answer and delete the guess record.'),
+                          actions: [
+                            TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: const Text(
+                                  "Restart",
+                                  style: TextStyle(color: Colors.red),
+                                )),
+                            TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                                child: const Text("Cancel"))
+                          ],
+                        );
+                      }).then((value) {
+                    if (value) {
+                      body.restart();
+                    }
+                  });
+                  break;
+              }
+            },
+          )
         ],
       ),
       body: body,
