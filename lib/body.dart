@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/guess.dart';
 
 class AppBody extends StatefulWidget {
@@ -12,6 +13,10 @@ class AppBody extends StatefulWidget {
 
   restart() {
     _key.currentState?.restart();
+  }
+
+  showSnackBar(msg) {
+    _key.currentState?.showSnackBar(msg);
   }
 }
 
@@ -151,21 +156,28 @@ class AppBodyState extends State<AppBody> {
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
         if (a == 4) {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('You guessed right!'),
-                  content: Text(
-                      'The answer is $ans,\nYou spend ${guess.length} times.'),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text("OK"))
-                  ],
-                );
-              }).then((value) => restart());
+          SharedPreferencesUtil().setBestScore(guess.length).then(((bestScore) {
+            showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('You guessed right!'),
+                    content: Text(
+                        'The answer is $ans,\nYou spend ${guess.length} times.\n' +
+                            (bestScore == guess.length
+                                ? 'You broke the record!'
+                                : 'Your best record is: ' +
+                                    bestScore.toString() +
+                                    '.')),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: const Text("OK"))
+                    ],
+                  );
+                }).then((value) => restart());
+          }));
         }
       }
     }
