@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/guess.dart';
 
@@ -194,11 +195,22 @@ class AppBodyState extends State<AppBody> {
                                     '.')),
                     actions: [
                       TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: const Text("Share")),
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
                           child: const Text("OK"))
                     ],
                   );
-                }).then((value) => restart());
+                }).then((value) {
+              if (value) {
+                Share.share(
+                    'I play 1A2B games,\nIt took me ${guess.length} guesses to guess the answer!'
+                    '\nIf you also want to play you can go to https://sites.google.com/view/ycyprogram/1a2b',
+                    subject: 'Fun 1A2B Game');
+              }
+              restart();
+            });
           }));
         }
       }
