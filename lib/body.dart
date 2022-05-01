@@ -39,21 +39,43 @@ class AppBodyState extends State<AppBody> {
       children: <Widget>[
         Expanded(
             child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 controller: _listController,
                 itemCount: guess.length,
                 itemBuilder: (context, idx) {
                   return Card(
                     color: Colors.grey,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${idx + 1}. ${guess[idx].guess} ${guess[idx].a}A${guess[idx].b}B',
-                        style:
-                            const TextStyle(fontSize: 25, color: Colors.white),
-                      ),
-                    ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            text: '',
+                            style: const TextStyle(
+                                fontSize: 25, color: Colors.white),
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: '${idx + 1}. ',
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic)),
+                              TextSpan(
+                                  text: '${guess[idx].guess} ',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              TextSpan(
+                                  text: '${guess[idx].a}A',
+                                  style: const TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 100, 205, 253))),
+                              TextSpan(
+                                  text: '${guess[idx].b}B',
+                                  style: const TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 253, 239, 113))),
+                            ],
+                          ),
+                        )),
                   );
                 })),
         Container(
@@ -151,7 +173,7 @@ class AppBodyState extends State<AppBody> {
           guess.add(GuessData(_inputController.text, a, b));
           _inputController.clear();
         });
-        Future.delayed(const Duration(milliseconds: 16)).then((value) =>
+        Future.delayed(const Duration(milliseconds: 100)).then((value) =>
             _listController.animateTo(_listController.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
