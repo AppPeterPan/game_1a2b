@@ -31,6 +31,18 @@
 
   <title>Game 1A2B</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    .container{
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .indicator{
+      width: 30vw;
+    }
+  </style>
 
   <script>
     // The value below is injected by flutter build, do not touch.
@@ -39,7 +51,10 @@
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
-<body>
+<body style="overflow: hidden;">
+  <div id="loading_indicator" class="container">
+    <img class="indicator" src="./assets/loading.gif" />
+  </div>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -50,6 +65,10 @@
       }).then(function(engineInitializer) {
         return engineInitializer.initializeEngine();
       }).then(function(appRunner) {
+        var loadingIndicator = document.getElementById('loading_indicator');
+        if(loadingIndicator){
+          loadingIndicator.remove();
+        }
         return appRunner.runApp();
       });
     });
