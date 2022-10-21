@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,19 +28,20 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Game 1A2B</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    .container{
+    .container {
       width: 100vw;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    .indicator{
+
+    .indicator {
       width: 30vw;
     }
   </style>
@@ -51,27 +53,33 @@
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
 </head>
+
 <body style="overflow: hidden;">
   <div id="loading_indicator" class="container">
-    <img class="indicator" src="./assets/loading.gif" />
+    <lottie-player src="./assets/loading.json" background="transparent" speed="1" class="indicator" loop autoplay>
+    </lottie-player>
   </div>
+  <script src="./assets/lottie-player.js"></script>
   <script>
-    window.addEventListener('load', function(ev) {
+    window.addEventListener('load', function (ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         }
-      }).then(function(engineInitializer) {
+      }).then(function (engineInitializer) {
         return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        var loadingIndicator = document.getElementById('loading_indicator');
-        if(loadingIndicator){
-          loadingIndicator.remove();
+      }).then(function (appRunner) {
+        const loadingIndicator = document.getElementById('loading_indicator');
+        if (loadingIndicator) {
+          setTimeout(() => {
+            loadingIndicator.remove();
+          }, 1000);
         }
         return appRunner.runApp();
       });
     });
   </script>
 </body>
+
 </html>
