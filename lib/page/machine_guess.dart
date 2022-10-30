@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/cubit/machine_guess_cubit.dart';
-import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 import 'package:game_1a2b/keyboard/ab_keyboard.dart';
-import 'package:game_1a2b/keyboard/num_keyboard.dart';
 
 class MachineGuessPage extends StatelessWidget {
   const MachineGuessPage({super.key});

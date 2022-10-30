@@ -88,9 +88,7 @@ class UserGuessGame extends StatelessWidget {
                         'The answer is ${state.answer},\nYou spend ${state.guessRecord.length} times.\n' +
                             (bestScore == state.guessRecord.length
                                 ? 'You broke the record!'
-                                : 'Your best record is: ' +
-                                    bestScore.toString() +
-                                    '.')),
+                                : 'Your best record is: $bestScore.')),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     actions: [

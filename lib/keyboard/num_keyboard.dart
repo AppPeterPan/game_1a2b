@@ -60,7 +60,7 @@ class _KeyboardInputContent extends StatelessWidget {
 
 class _KeyboardNumRow extends StatelessWidget {
   const _KeyboardNumRow(
-      {required this.textButtonStyle, required this.startNum, super.key});
+      {required this.textButtonStyle, required this.startNum});
   final ButtonStyle textButtonStyle;
   final int startNum;
   @override
