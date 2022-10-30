@@ -44,7 +44,7 @@ class MachineGuessPage extends StatelessWidget {
           return exit;
         },
         child: Scaffold(
-            backgroundColor: const Color(0xE5EAEAFF),
+            backgroundColor: const Color(0xFFE5EAEA),
             appBar: AppBar(
               title: const Text('Machine Guess'),
             ),

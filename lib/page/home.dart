@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xE5EAEAFF),
+      backgroundColor: const Color(0xFFE5EAEA),
       appBar: AppBar(
         title: const Text('Game 1A2B'),
         actions: appBarActions,
