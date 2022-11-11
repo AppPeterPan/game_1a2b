@@ -127,7 +127,7 @@
     "@machineGuessErrorContent": {
         "description": ""
     },
-    "closeAndRetryBtn": "Close and retry",
+    "closeAndRetryBtn": "Retry",
     "@closeAndRetryBtn": {
         "description": ""
     },

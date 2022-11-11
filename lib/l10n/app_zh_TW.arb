@@ -22,7 +22,7 @@
     "shareScoreContent": "我玩 1A2B 遊戲，\n我花了{times}次猜到答案!\n如果你也想玩，可以去 https://sites.google.com/view/ycyprogram/1a2b",
     "machineGuessErrorTitle": "哎呀! 出了問題!",
     "machineGuessErrorContent": "您可能在此過程中回答錯誤，導致機器無法正確猜測答案。",
-    "closeAndRetryBtn": "關閉並重新開始",
+    "closeAndRetryBtn": "重新開始",
     "machineGuessedTitle": "機器猜到了!",
     "machineGuessedContent": "它花了{times}次。",
     "inputNumberHint": "4個不重複的數字"
