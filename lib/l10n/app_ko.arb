@@ -19,7 +19,7 @@
     "shareBtn": "공유하다",
     "okBtn": "좋은",
     "shareScoreTitle": "1A2B 게임을 플레이하세요",
-    "shareScoreContent": "저는 1A2B를 플레이합니다.\n답을 맞추는 데 {times}번 걸렸습니다!\n나도 플레이하고 싶다면 https://sites.google.com/view/ycyprogram/1a2b로 이동하세요.",
+    "shareScoreContent": "저는 1A2B를 플레이합니다.\n답을 맞추는 데 {times}번 걸렸습니다!\n나도 플레이하고 싶다면 https://sites.google.com/view/ycyprogram/1a2b 로 이동하세요.",
     "machineGuessErrorTitle": "아차! 문제가 발생했습니다!",
     "machineGuessErrorContent": "그 과정에서 당신이 잘못 답했을 수 있으며, 이는 기계가 답을 올바르게 추측하지 못하게 합니다.",
     "closeAndRetryBtn": "재시작",
