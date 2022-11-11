@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/num_keyboard_cubit.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 
@@ -49,9 +50,9 @@ class _KeyboardInputContent extends StatelessWidget {
           style: const TextStyle(fontSize: 25),
         );
       } else {
-        return const Text(
-          '4 unique numbers',
-          style: TextStyle(color: Colors.grey, fontSize: 25),
+        return Text(
+          AppLocalizations.of(context)!.inputNumberHint,
+          style: const TextStyle(color: Colors.grey, fontSize: 25),
         );
       }
     });

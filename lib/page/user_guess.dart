@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/keyboard/num_keyboard.dart';
@@ -18,9 +19,8 @@ class UserGuessPage extends StatelessWidget {
           await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: const Text('Exit'),
-                    content: const Text(
-                        'Exit will end the game, are you sure you want to exit?'),
+                    title: Text(AppLocalizations.of(context)!.exitTitle),
+                    content: Text(AppLocalizations.of(context)!.exitContent),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     actions: <Widget>[
@@ -29,17 +29,17 @@ class UserGuessPage extends StatelessWidget {
                             exit = true;
                             Navigator.of(context).pop();
                           }),
-                          child: const Text(
-                            'Exit',
-                            style: TextStyle(color: Colors.red),
+                          child: Text(
+                            AppLocalizations.of(context)!.exitBtn,
+                            style: const TextStyle(color: Colors.red),
                           )),
                       TextButton(
                           onPressed: (() {
                             exit = false;
                             Navigator.of(context).pop();
                           }),
-                          child: const Text(
-                            'Continue',
+                          child: Text(
+                            AppLocalizations.of(context)!.continueBtn,
                           ))
                     ],
                   ));
@@ -48,7 +48,7 @@ class UserGuessPage extends StatelessWidget {
         child: Scaffold(
             backgroundColor: const Color(0xFFE5EAEA),
             appBar: AppBar(
-              title: const Text('User Guess'),
+              title: Text(AppLocalizations.of(context)!.userGuessTitle),
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -77,35 +77,38 @@ class UserGuessGame extends StatelessWidget {
         if (state.guessRecord[state.guessRecord.length - 1].a == 4) {
           SharedPreferencesUtil()
               .setBestScore(state.guessRecord.length)
-              .then(((bestScore) {
+              .then(((bestRecord) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('You got it!'),
-                    content: Text(
-                        'The answer is ${state.answer},\nYou spend ${state.guessRecord.length} times.\n' +
-                            (bestScore == state.guessRecord.length
-                                ? 'You broke the record!'
-                                : 'Your best record is: $bestScore.')),
+                    title: Text(AppLocalizations.of(context)!.userGuessedTitle),
+                    content: Text(bestRecord == state.guessRecord.length
+                        ? AppLocalizations.of(context)!.userGuessedContentBroke(
+                            state.answer, state.guessRecord.length.toString())
+                        : AppLocalizations.of(context)!
+                            .userGuessedContentNotBroke(
+                                state.answer,
+                                state.guessRecord.length.toString(),
+                                bestRecord.toString())),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     actions: [
                       TextButton(
                           onPressed: () => Navigator.of(context).pop(true),
-                          child: const Text("Share")),
+                          child: Text(AppLocalizations.of(context)!.shareBtn)),
                       TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text("OK"))
+                          child: Text(AppLocalizations.of(context)!.okBtn))
                     ],
                   );
                 }).then((value) {
               if (value) {
                 Share.share(
-                        'I play 1A2B games,\nIt took me ${state.guessRecord.length} guesses to guess the answer!'
-                        '\nIf you also want to play you can go to https://sites.google.com/view/ycyprogram/1a2b',
-                        subject: 'Fun 1A2B Game')
+                        AppLocalizations.of(context)!.shareScoreContent(
+                            state.guessRecord.length.toString()),
+                        subject: AppLocalizations.of(context)!.shareScoreTitle)
                     .then((value) {
                   Navigator.of(context).pop();
                 });

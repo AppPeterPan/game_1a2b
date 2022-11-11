@@ -1,0 +1,152 @@
+{
+    "userGuessTitle": "User Guess",
+    "@userGuessTitle": {
+        "description": ""
+    },
+    "machineGuessTitle": "Machine Guess",
+    "@machineGuessTitle": {
+        "description": ""
+    },
+    "bestRecordTitle": "Best Record",
+    "@bestRecordTitle": {
+        "description": ""
+    },
+    "licenseTitle": "License",
+    "@licenseTitle": {
+        "description": ""
+    },
+    "bestRecordWithContent": "Your best record is: {bestRecord}.",
+    "@bestRecordWithContent": {
+        "description": "",
+        "placeholders": {
+            "bestRecord": {
+                "type": "String",
+                "example": "999"
+            }
+        }
+    },
+    "bestRecordWithoutContent": "No best record yet!",
+    "@bestRecordWithoutContent": {
+        "description": ""
+    },
+    "closeBtn": "Close",
+    "@closeBtn": {
+        "description": ""
+    },
+    "resetBtn": "Reset",
+    "@resetBtn": {
+        "description": ""
+    },
+    "bestRecordCleared": "Best record cleared!",
+    "@bestRecordCleared": {
+        "description": ""
+    },
+    "undoBtn": "Undo",
+    "@undoBtn": {
+        "description": ""
+    },
+    "exitTitle": "Exit",
+    "@exitTitle": {
+        "description": ""
+    },
+    "exitContent": "Exit will end the game, are you sure you want to exit?",
+    "@exitContent": {
+        "description": ""
+    },
+    "exitBtn": "Exit",
+    "@exitBtn": {
+        "description": ""
+    },
+    "continueBtn": "Continue",
+    "@continueBtn": {
+        "description": ""
+    },
+    "userGuessedTitle": "You got it!",
+    "@userGuessedTitle": {
+        "description": ""
+    },
+    "userGuessedContentBroke": "The answer is {ans},\nYou spend {times} times.\n You broke the record!",
+    "@userGuessedContentBroke": {
+        "description": "",
+        "placeholders": {
+            "ans": {
+                "type": "String",
+                "example": "1234"
+            },
+            "times": {
+                "type": "String",
+                "example": "1"
+            }
+        }
+    },
+    "userGuessedContentNotBroke": "The answer is {ans},\nYou spend {times} times.\n Your best record is: {bestRecord}.",
+    "@userGuessedContentNotBroke": {
+        "description": "",
+        "placeholders": {
+            "ans": {
+                "type": "String",
+                "example": "1234"
+            },
+            "times": {
+                "type": "String",
+                "exasmple": "1"
+            },
+            "bestRecord": {
+                "type": "String",
+                "example": "999"
+            }
+        }
+    },
+    "shareBtn": "Share",
+    "@shareBtn": {
+        "description": ""
+    },
+    "okBtn": "Ok",
+    "@okBtn": {
+        "description": ""
+    },
+    "shareScoreTitle": "Fun 1A2B Game",
+    "@shareScoreTitle": {
+        "description": ""
+    },
+    "shareScoreContent": "I play 1A2B games,\nIt took me {times} guesses to guess the answer!\nIf you also want to play you can go to https://sites.google.com/view/ycyprogram/1a2b",
+    "@shareScoreContent": {
+        "description": "",
+        "placeholders": {
+            "times": {
+                "type": "String",
+                "example": "1"
+            }
+        }
+    },
+    "machineGuessErrorTitle": "Oops! Something went wrong!",
+    "@machineGuessErrorTitle": {
+        "description": ""
+    },
+    "machineGuessErrorContent": "You may have answered incorrectly in the process, preventing the machine from guessing the answer correctly.",
+    "@machineGuessErrorContent": {
+        "description": ""
+    },
+    "closeAndRetryBtn": "Close and retry",
+    "@closeAndRetryBtn": {
+        "description": ""
+    },
+    "machineGuessedTitle": "Machine guessed!",
+    "@machineGuessedTitle": {
+        "description": ""
+    },
+    "machineGuessedContent": "It spend {times} times.",
+    "@machineGuessedContent": {
+        "description": "",
+        "placeholders": {
+            "times": {
+                "type": "String",
+                "example": "1"
+            }
+        }
+    },
+    "inputNumberHint": "4 unique numbers",
+    "@inputNumberHint": {
+        "description": ""
+    }
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/machine_guess_cubit.dart';
 import 'package:game_1a2b/keyboard/ab_keyboard.dart';
 
@@ -16,9 +17,8 @@ class MachineGuessPage extends StatelessWidget {
           await showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: const Text('Exit'),
-                    content: const Text(
-                        'Exit will end the game, are you sure you want to exit?'),
+                    title: Text(AppLocalizations.of(context)!.exitTitle),
+                    content: Text(AppLocalizations.of(context)!.exitContent),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     actions: <Widget>[
@@ -27,17 +27,17 @@ class MachineGuessPage extends StatelessWidget {
                             exit = true;
                             Navigator.of(context).pop();
                           }),
-                          child: const Text(
-                            'Exit',
-                            style: TextStyle(color: Colors.red),
+                          child: Text(
+                            AppLocalizations.of(context)!.exitBtn,
+                            style: const TextStyle(color: Colors.red),
                           )),
                       TextButton(
                           onPressed: (() {
                             exit = false;
                             Navigator.of(context).pop();
                           }),
-                          child: const Text(
-                            'Continue',
+                          child: Text(
+                            AppLocalizations.of(context)!.continueBtn,
                           ))
                     ],
                   ));
@@ -46,7 +46,7 @@ class MachineGuessPage extends StatelessWidget {
         child: Scaffold(
             backgroundColor: const Color(0xFFE5EAEA),
             appBar: AppBar(
-              title: const Text('Machine Guess'),
+              title: Text(AppLocalizations.of(context)!.machineGuessTitle),
             ),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,15 +78,17 @@ class MachineGuessGame extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Oops! Something went wrong!'),
-                  content: const Text(
-                      'You may have answered incorrectly in the process, preventing the machine from guessing the answer correctly.'),
+                  title: Text(
+                      AppLocalizations.of(context)!.machineGuessErrorTitle),
+                  content: Text(
+                      AppLocalizations.of(context)!.machineGuessErrorContent),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text("Close and retry"))
+                        child: Text(
+                            AppLocalizations.of(context)!.closeAndRetryBtn))
                   ],
                 );
               }).then((value) => Navigator.of(context).pop());
@@ -96,14 +98,17 @@ class MachineGuessGame extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Machine guessed!'),
-                  content: Text('It spend ${state.guessRecord.length} times.'),
+                  title:
+                      Text(AppLocalizations.of(context)!.machineGuessedTitle),
+                  content: Text(AppLocalizations.of(context)!
+                      .machineGuessedContent(
+                          state.guessRecord.length.toString())),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15)),
                   actions: [
                     TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text("OK"))
+                        child: Text(AppLocalizations.of(context)!.okBtn))
                   ],
                 );
               }).then((value) => Navigator.of(context).pop());

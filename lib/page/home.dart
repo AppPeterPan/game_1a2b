@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
@@ -11,13 +12,13 @@ class HomePage extends StatelessWidget {
     final List<Widget> appBarActions = [
       PopupMenuButton(
         itemBuilder: (context) => <PopupMenuEntry>[
-          const PopupMenuItem(
-            child: Text('Best Record'),
+          PopupMenuItem(
+            child: Text(AppLocalizations.of(context)!.bestRecordTitle),
             value: 0,
           ),
           const PopupMenuDivider(),
-          const PopupMenuItem(
-            child: Text('License'),
+          PopupMenuItem(
+            child: Text(AppLocalizations.of(context)!.licenseTitle),
             value: 1,
           )
         ],
@@ -27,40 +28,46 @@ class HomePage extends StatelessWidget {
           switch (val) {
             case 0:
               SharedPreferencesUtil().getBsetScore().then(
-                (bestScore) {
+                (bestRecord) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Best Record'),
-                          content: Text(bestScore == null
-                              ? 'No best record yet!'
-                              : 'Your best record is: $bestScore.'),
+                          title: Text(
+                              AppLocalizations.of(context)!.bestRecordTitle),
+                          content: Text(bestRecord == null
+                              ? AppLocalizations.of(context)!
+                                  .bestRecordWithoutContent
+                              : AppLocalizations.of(context)!
+                                  .bestRecordWithContent(
+                                      bestRecord.toString())),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           actions: [
                             TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(true),
-                                child: const Text(
-                                  'Reset',
-                                  style: TextStyle(color: Colors.red),
+                                child: Text(
+                                  AppLocalizations.of(context)!.resetBtn,
+                                  style: const TextStyle(color: Colors.red),
                                 )),
                             TextButton(
                                 onPressed: () =>
                                     Navigator.of(context).pop(false),
-                                child: const Text('Close'))
+                                child: Text(
+                                    AppLocalizations.of(context)!.closeBtn))
                           ],
                         );
                       }).then((value) {
                     if (value == true) {
                       SharedPreferencesUtil().resetBestScore();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: const Text('Best record cleared!'),
+                        content: Text(
+                            AppLocalizations.of(context)!.bestRecordCleared),
                         action: SnackBarAction(
-                          label: 'Undo',
+                          label: AppLocalizations.of(context)!.undoBtn,
                           onPressed: () =>
-                              SharedPreferencesUtil().setBestScore(bestScore),
+                              SharedPreferencesUtil().setBestScore(bestRecord),
                         ),
                         duration: const Duration(milliseconds: 1500),
                       ));
@@ -92,7 +99,7 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             MenuItem(
                 icon: Icons.person,
-                title: 'User Guess',
+                title: AppLocalizations.of(context)!.userGuessTitle,
                 actionIcon: Icons.play_arrow,
                 action: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -100,7 +107,7 @@ class HomePage extends StatelessWidget {
                 }),
             MenuItem(
                 icon: Icons.devices,
-                title: 'Machine Guess',
+                title: AppLocalizations.of(context)!.machineGuessTitle,
                 actionIcon: Icons.play_arrow,
                 action: () {
                   Navigator.of(context).push(MaterialPageRoute(
