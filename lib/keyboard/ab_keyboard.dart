@@ -47,7 +47,7 @@ class _KeyboardInputContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                '$question ${a}A${b}B',
+                '$question ${a >= 0 ? a : '?'}A${b >= 0 ? b : '?'}B',
                 style: const TextStyle(fontSize: 25),
               ),
               const SizedBox(
@@ -60,8 +60,10 @@ class _KeyboardInputContent extends StatelessWidget {
                 ),
                 iconSize: 35,
                 onPressed: (() {
-                  BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
-                  BlocProvider.of<ABKeyboardCubit>(context).clear();
+                  if (a >= 0 && b >= 0) {
+                    BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
+                    BlocProvider.of<ABKeyboardCubit>(context).clear();
+                  }
                 }),
               )
             ],

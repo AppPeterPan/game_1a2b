@@ -50,20 +50,92 @@ class UserGuessPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.userGuessTitle),
             ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
-                Expanded(child: UserGuessGame()),
-                NumKeyboard()
-              ],
-            )),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: const QuitBtn(),
+            body: OrientationBuilder(builder: (context, orientation) {
+              switch (orientation) {
+                case Orientation.portrait:
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Expanded(child: _UserGuessGame()),
+                      NumKeyboard()
+                    ],
+                  );
+                case Orientation.landscape:
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Expanded(child: NumKeyboard()),
+                      Expanded(child: _UserGuessGame())
+                    ],
+                  );
+              }
+            })),
       ),
     );
   }
 }
 
-class UserGuessGame extends StatelessWidget {
-  const UserGuessGame({super.key});
+class QuitBtn extends StatelessWidget {
+  const QuitBtn({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        final String answer =
+            BlocProvider.of<UserGuessCubit>(context).state.answer;
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(AppLocalizations.of(context)!.quitTitle),
+                content: Text(AppLocalizations.of(context)!.quitContent),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: Text(
+                        AppLocalizations.of(context)!.quitBtn,
+                        style: const TextStyle(color: Colors.red),
+                      )),
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: Text(AppLocalizations.of(context)!.continueBtn))
+                ],
+              );
+            }).then((value) {
+          if (value) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.youQuitTitle),
+                    content: Text(
+                        AppLocalizations.of(context)!.youQuitContent(answer)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    actions: [
+                      TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(
+                              AppLocalizations.of(context)!.closeAndRetryBtn))
+                    ],
+                  );
+                }).then((value) => Navigator.of(context).pop());
+          }
+        });
+      },
+      tooltip: AppLocalizations.of(context)!.quitBtn,
+      child: const Icon(Icons.close),
+    );
+  }
+}
+
+class _UserGuessGame extends StatelessWidget {
+  const _UserGuessGame();
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +168,11 @@ class UserGuessGame extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15)),
                     actions: [
                       TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
+                          onPressed: () => Share.share(
+                              AppLocalizations.of(context)!.shareScoreContent(
+                                  state.guessRecord.length.toString()),
+                              subject: AppLocalizations.of(context)!
+                                  .shareScoreTitle),
                           child: Text(AppLocalizations.of(context)!.shareBtn)),
                       TextButton(
                           onPressed: () => Navigator.of(context).pop(false),
@@ -104,17 +180,7 @@ class UserGuessGame extends StatelessWidget {
                     ],
                   );
                 }).then((value) {
-              if (value) {
-                Share.share(
-                        AppLocalizations.of(context)!.shareScoreContent(
-                            state.guessRecord.length.toString()),
-                        subject: AppLocalizations.of(context)!.shareScoreTitle)
-                    .then((value) {
-                  Navigator.of(context).pop();
-                });
-              } else {
-                Navigator.of(context).pop();
-              }
+              Navigator.of(context).pop();
             });
           }));
         }

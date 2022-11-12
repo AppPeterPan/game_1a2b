@@ -148,5 +148,31 @@
     "inputNumberHint": "4 unique numbers",
     "@inputNumberHint": {
         "description": ""
+    },
+    "quitBtn": "Quit",
+    "@quitBtn": {
+        "description": ""
+    },
+    "quitTitle": "Quit",
+    "@quitTitle": {
+        "description": ""
+    },
+    "quitContent": "Are you sure you want to quit the game and get the answer?",
+    "@quitContent": {
+        "description": ""
+    },
+    "youQuitTitle": "You quit!",
+    "@youQuitTitle": {
+        "description": ""
+    },
+    "youQuitContent": "The answer is {ans}.",
+    "@youQuitContent": {
+        "description": "",
+        "placeholders": {
+            "ans": {
+                "type": "String",
+                "example": "1234"
+            }
+        }
     }
 }

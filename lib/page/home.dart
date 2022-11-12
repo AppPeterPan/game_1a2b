@@ -4,6 +4,8 @@ import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
 
+enum HomePagePopupItem { bestRecord, license }
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -12,21 +14,21 @@ class HomePage extends StatelessWidget {
     final List<Widget> appBarActions = [
       PopupMenuButton(
         itemBuilder: (context) => <PopupMenuEntry>[
-          PopupMenuItem(
+          PopupMenuItem<HomePagePopupItem>(
             child: Text(AppLocalizations.of(context)!.bestRecordTitle),
-            value: 0,
+            value: HomePagePopupItem.bestRecord,
           ),
           const PopupMenuDivider(),
-          PopupMenuItem(
+          PopupMenuItem<HomePagePopupItem>(
             child: Text(AppLocalizations.of(context)!.licenseTitle),
-            value: 1,
+            value: HomePagePopupItem.license,
           )
         ],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         offset: const Offset(0, 50),
         onSelected: (val) {
           switch (val) {
-            case 0:
+            case HomePagePopupItem.bestRecord:
               SharedPreferencesUtil().getBsetScore().then(
                 (bestRecord) {
                   showDialog(
@@ -69,14 +71,14 @@ class HomePage extends StatelessWidget {
                           onPressed: () =>
                               SharedPreferencesUtil().setBestScore(bestRecord),
                         ),
-                        duration: const Duration(milliseconds: 1500),
+                        duration: const Duration(milliseconds: 2500),
                       ));
                     }
                   });
                 },
               );
               break;
-            case 1:
+            case HomePagePopupItem.license:
               showLicensePage(
                   context: context,
                   applicationName: '1A2B',

@@ -2,7 +2,7 @@
     "userGuessTitle": "사용자 추측",
     "machineGuessTitle": "로봇 추측",
     "bestRecordTitle": "최고 기록",
-    "licenseTitle": "저작권 고지",
+    "licenseTitle": "라이선스",
     "bestRecordWithContent": "귀하의 최고 기록은 {bestRecord}입니다.",
     "bestRecordWithoutContent": "아직 최고 기록이 없습니다!",
     "closeBtn": "폐쇄",
@@ -25,5 +25,10 @@
     "closeAndRetryBtn": "재시작",
     "machineGuessedTitle": "기계가 추측했습니다!",
     "machineGuessedContent": "{times} 번 추측했습니다.",
-    "inputNumberHint": "4개의 다른 숫자"
+    "inputNumberHint": "4개의 다른 숫자",
+    "quitBtn": "포기하다",
+    "quitTitle": "포기하다",
+    "quitContent": "포기하고 답을 얻으시겠습니까?",
+    "youQuitTitle": "당신은 포기!",
+    "youQuitContent": "답은 {ans}입니다."
 }

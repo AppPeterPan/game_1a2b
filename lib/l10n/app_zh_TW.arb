@@ -2,7 +2,7 @@
     "userGuessTitle": "人猜機器",
     "machineGuessTitle": "機器猜人",
     "bestRecordTitle": "最佳紀錄",
-    "licenseTitle": "著作權聲明",
+    "licenseTitle": "授權",
     "bestRecordWithContent": "你的最佳紀錄是: {bestRecord}。",
     "bestRecordWithoutContent": "尚無最佳紀錄!",
     "closeBtn": "關閉",
@@ -25,5 +25,10 @@
     "closeAndRetryBtn": "重新開始",
     "machineGuessedTitle": "機器猜到了!",
     "machineGuessedContent": "它花了{times}次。",
-    "inputNumberHint": "4個不重複的數字"
+    "inputNumberHint": "4個不重複的數字",
+    "quitBtn": "放棄",
+    "quitTitle": "放棄",
+    "quitContent": "您確定要放棄並查看答案嗎?",
+    "youQuitTitle": "你放棄了!",
+    "youQuitContent": "答案是{ans}。"
 }

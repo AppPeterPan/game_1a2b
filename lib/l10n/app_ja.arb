@@ -2,7 +2,7 @@
   "userGuessTitle": "ユーザー推測",
   "machineGuessTitle": "ロボット推測",
   "bestRecordTitle": "最高記録",
-  "licenseTitle": "著作権表示",
+  "licenseTitle": "ライセンス",
   "bestRecordWithContent": "あなたの最高記録は次のとおりです: {bestRecord}。",
   "bestRecordWithoutContent": "最高記録はまだない！",
   "closeBtn": "クロージャー",
@@ -25,5 +25,10 @@
   "closeAndRetryBtn": "再起動します",
   "machineGuessedTitle": "機械はそれを推測しました！",
   "machineGuessedContent": "{times}回かかりました。",
-  "inputNumberHint": "4つの異なる数字"
+  "inputNumberHint": "4つの異なる数字",
+  "quitBtn": "あきらめる",
+  "quitTitle": "あきらめる",
+  "quitContent": "あきらめて答えを得たいですか？",
+  "youQuitTitle": "あなたはあきらめる！",
+  "youQuitContent": "答えは {ans} です。"
 }

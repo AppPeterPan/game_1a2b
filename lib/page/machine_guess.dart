@@ -44,24 +44,38 @@ class MachineGuessPage extends StatelessWidget {
           return exit;
         },
         child: Scaffold(
-            backgroundColor: const Color(0xFFE5EAEA),
-            appBar: AppBar(
-              title: Text(AppLocalizations.of(context)!.machineGuessTitle),
-            ),
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
-                Expanded(child: MachineGuessGame()),
-                ABKeyboard()
-              ],
-            )),
+          backgroundColor: const Color(0xFFE5EAEA),
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.machineGuessTitle),
+          ),
+          body: OrientationBuilder(builder: (context, orientation) {
+            switch (orientation) {
+              case Orientation.portrait:
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Expanded(child: _MachineGuessGame()),
+                    ABKeyboard()
+                  ],
+                );
+              case Orientation.landscape:
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Expanded(child: ABKeyboard()),
+                    Expanded(child: _MachineGuessGame())
+                  ],
+                );
+            }
+          }),
+        ),
       ),
     );
   }
 }
 
-class MachineGuessGame extends StatelessWidget {
-  const MachineGuessGame({super.key});
+class _MachineGuessGame extends StatelessWidget {
+  const _MachineGuessGame();
 
   @override
   Widget build(BuildContext context) {

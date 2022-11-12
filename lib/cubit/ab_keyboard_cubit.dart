@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'ab_keyboard_state.dart';
 
 class ABKeyboardCubit extends Cubit<ABKeyboardState> {
-  ABKeyboardCubit() : super(ABKeyboardState(a: 0, b: 0));
+  ABKeyboardCubit() : super(ABKeyboardState(a: -1, b: -1));
 
   void inputA(int x) {
     int b = super.state.b;
@@ -19,6 +19,6 @@ class ABKeyboardCubit extends Cubit<ABKeyboardState> {
   }
 
   void clear() {
-    emit(ABKeyboardState(a: 0, b: 0));
+    emit(ABKeyboardState(a: -1, b: -1));
   }
 }
