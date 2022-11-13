@@ -7,6 +7,22 @@
     "@machineGuessTitle": {
         "description": ""
     },
+    "gameRecordTitle": "History Record",
+    "@gameRecordTitle": {
+        "description": ""
+    },
+    "userGuessSubtitle": "In this game mode, the machine will randomly select 4 different numbers, and you have to guess these 4 numbers successfully after guessing many times.",
+    "@userGuessSubtitle": {
+        "description": ""
+    },
+    "machineGuessSubtitle": "In this game mode, the machine will ask you if it guessed the 4 numbers correctly until it guesses successfully, you have to reply xAyB to it. As long as you answer correctly every time, it will guess correctly.",
+    "@machineGuessSubtitle": {
+        "description": ""
+    },
+    "gameRecordSubtitle": "The number of guesses you make every time you play the game is recorded here, and you can view or delete these data.",
+    "@gameRecordSubtitle": {
+        "description": ""
+    },
     "bestRecordTitle": "Best Record",
     "@bestRecordTitle": {
         "description": ""
@@ -174,5 +190,35 @@
                 "example": "1234"
             }
         }
+    },
+    "completePreparation": "The preparation is complete, please start the game!",
+    "@completePreparation": {
+        "description": ""
+    },
+    "times": "{times} times",
+    "@times": {
+        "description": "",
+        "placeholders": {
+            "times": {
+                "type": "String",
+                "example": "1"
+            }
+        }
+    },
+    "deleteAllRecordTitle": "Delete all records",
+    "@deleteAllRecordTitle": {
+        "description": ""
+    },
+    "deleteAllRecordContent": "Once deleted, it cannot be recovered!",
+    "@deleteAllRecordContent": {
+        "description": ""
+    },
+    "deleteBtn": "Delete",
+    "@deleteBtn": {
+        "description": ""
+    },
+    "cancelBtn": "Cancel",
+    "@cancelBtn": {
+        "description": ""
     }
 }

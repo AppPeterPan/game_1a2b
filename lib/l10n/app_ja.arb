@@ -1,6 +1,10 @@
 {
   "userGuessTitle": "ユーザー推測",
   "machineGuessTitle": "ロボット推測",
+  "gameRecordTitle": "前の記録",
+  "userGuessSubtitle": "このゲームモードでは、マシンが 4 つの異なる数字をランダムに選択します。何度も推測した後、これらの 4 つの数字を正しく推測する必要があります。",
+  "machineGuessSubtitle": "このゲームモードでは、マシンは推測に成功するまで、推測した 4 つの数字が正しいかどうかをマシンに尋ねます。あなたは xAyB と答えます。 あなたの答えが毎回正しい限り、機械は正しく推測できます。",
+  "gameRecordSubtitle": "このページには、ゲームをプレイするたびに試行した推測の数が記録され、このデータを表示または削除できます。",
   "bestRecordTitle": "最高記録",
   "licenseTitle": "ライセンス",
   "bestRecordWithContent": "あなたの最高記録は次のとおりです: {bestRecord}。",
@@ -30,5 +34,11 @@
   "quitTitle": "あきらめる",
   "quitContent": "あきらめて答えを得たいですか？",
   "youQuitTitle": "あなたはあきらめる！",
-  "youQuitContent": "答えは {ans} です。"
+  "youQuitContent": "答えは {ans} です。",
+  "completePreparation": "準備ができました、ゲームを始めましょう！",
+  "times": "{times}回",
+  "deleteAllRecordTitle": "すべてのレコードを削除",
+  "deleteAllRecordContent": "一度削除すると元に戻せません！",
+  "deleteBtn": "消去",
+  "cancelBtn": "キャンセル"
 }

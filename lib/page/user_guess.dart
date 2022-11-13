@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_1a2b/cubit/history_cubit.dart';
+import 'package:game_1a2b/game_record.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 import 'package:game_1a2b/data.dart';
@@ -103,7 +105,7 @@ class QuitBtn extends StatelessWidget {
                       )),
                   TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(AppLocalizations.of(context)!.continueBtn))
+                      child: Text(AppLocalizations.of(context)!.cancelBtn))
                 ],
               );
             }).then((value) {
@@ -147,6 +149,10 @@ class _UserGuessGame extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
         if (state.guessRecord[state.guessRecord.length - 1].a == 4) {
+          BlocProvider.of<HistoryCubit>(context).addRecord(GameRecord(
+              dateTime: DateTime.now(),
+              gameMode: 0,
+              times: state.guessRecord.length));
           SharedPreferencesUtil()
               .setBestScore(state.guessRecord.length)
               .then(((bestRecord) {
@@ -186,44 +192,54 @@ class _UserGuessGame extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            controller: _listController,
-            itemCount: state.guessRecord.length,
-            itemBuilder: (context, idx) {
-              return Card(
-                color: Colors.grey,
-                child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    alignment: Alignment.centerLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        text: '',
-                        style:
-                            const TextStyle(fontSize: 25, color: Colors.white),
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: '${idx + 1}. ',
-                              style:
-                                  const TextStyle(fontStyle: FontStyle.italic)),
-                          TextSpan(
-                              text: '${state.guessRecord[idx].guess} ',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(
-                              text: '${state.guessRecord[idx].a}A',
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 100, 205, 253))),
-                          TextSpan(
-                              text: '${state.guessRecord[idx].b}B',
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 253, 239, 113))),
-                        ],
-                      ),
-                    )),
-              );
-            });
+        if (state.guessRecord.isEmpty) {
+          return Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                AppLocalizations.of(context)!.completePreparation,
+                style: const TextStyle(fontSize: 25),
+              ));
+        } else {
+          return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              controller: _listController,
+              itemCount: state.guessRecord.length,
+              itemBuilder: (context, idx) {
+                return Card(
+                  color: Colors.grey,
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        text: TextSpan(
+                          text: '',
+                          style: const TextStyle(
+                              fontSize: 25, color: Colors.white),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: '${idx + 1}. ',
+                                style: const TextStyle(
+                                    fontStyle: FontStyle.italic)),
+                            TextSpan(
+                                text: '${state.guessRecord[idx].guessNum} ',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            TextSpan(
+                                text: '${state.guessRecord[idx].a}A',
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 100, 205, 253))),
+                            TextSpan(
+                                text: '${state.guessRecord[idx].b}B',
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 253, 239, 113))),
+                          ],
+                        ),
+                      )),
+                );
+              });
+        }
       },
     );
   }

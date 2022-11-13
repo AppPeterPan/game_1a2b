@@ -37,7 +37,7 @@ class UserGuessCubit extends Cubit<UserGuessState> {
         }
       }
     }
-    guessRecord.add(GuessData(num, a, b));
+    guessRecord.add(GuessData(guessNum: num, a: a, b: b));
     emit(UserGuessState(answer: ansString, guessRecord: guessRecord));
   }
 }

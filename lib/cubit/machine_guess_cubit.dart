@@ -59,7 +59,7 @@ class MachineGuessCubit extends Cubit<MachineGuessState> {
         newNumList.add(numberList[i]);
       }
     }
-    guessRecord.add(GuessData(question, a, b));
+    guessRecord.add(GuessData(guessNum: question, a: a, b: b));
     final String newQuestion = newNumList.isNotEmpty
         ? newNumList[Random().nextInt(newNumList.length)]
         : 'stww';

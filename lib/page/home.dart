@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/data.dart';
+import 'package:game_1a2b/page/history.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
 
@@ -37,12 +38,11 @@ class HomePage extends StatelessWidget {
                         return AlertDialog(
                           title: Text(
                               AppLocalizations.of(context)!.bestRecordTitle),
-                          content: Text(bestRecord == null
+                          content: Text(bestRecord is int
                               ? AppLocalizations.of(context)!
-                                  .bestRecordWithoutContent
+                                  .bestRecordWithContent(bestRecord.toString())
                               : AppLocalizations.of(context)!
-                                  .bestRecordWithContent(
-                                      bestRecord.toString())),
+                                  .bestRecordWithoutContent),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           actions: [
@@ -89,81 +89,100 @@ class HomePage extends StatelessWidget {
       )
     ];
 
+    final List<MenuData> menuDataList = [
+      MenuData(
+          title: AppLocalizations.of(context)!.userGuessTitle,
+          subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+          icon: Icons.person,
+          action: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const UserGuessPage()))),
+      MenuData(
+          title: AppLocalizations.of(context)!.machineGuessTitle,
+          subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
+          icon: Icons.devices,
+          action: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const MachineGuessPage()))),
+      MenuData(
+          title: AppLocalizations.of(context)!.gameRecordTitle,
+          subtitle: AppLocalizations.of(context)!.gameRecordSubtitle,
+          icon: Icons.history,
+          action: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const HistoryPage()))),
+    ];
+
     return Scaffold(
       backgroundColor: const Color(0xFFE5EAEA),
       appBar: AppBar(
         title: const Text('Game 1A2B'),
         actions: appBarActions,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-            MenuItem(
-                icon: Icons.person,
-                title: AppLocalizations.of(context)!.userGuessTitle,
-                actionIcon: Icons.play_arrow,
-                action: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const UserGuessPage()));
-                }),
-            MenuItem(
-                icon: Icons.devices,
-                title: AppLocalizations.of(context)!.machineGuessTitle,
-                actionIcon: Icons.play_arrow,
-                action: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const MachineGuessPage()));
-                }),
-          ],
-        ),
-      ),
+      body: ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: menuDataList.length,
+          itemBuilder: (context, idx) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: InkWell(
+                        onTap: menuDataList[idx].action,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Row(children: <Widget>[
+                            Icon(
+                              menuDataList[idx].icon,
+                              size: 60,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                  Text(
+                                    menuDataList[idx].title,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.grey.shade900,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    menuDataList[idx].subtitle,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ),
+                                ]))
+                          ]),
+                        ),
+                      ))),
+            );
+          }),
     );
   }
 }
 
-class MenuItem extends StatelessWidget {
-  const MenuItem(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.actionIcon,
-      required this.action});
-  final IconData icon;
+class MenuData {
   final String title;
-  final IconData actionIcon;
+  final String subtitle;
+  final IconData icon;
   final VoidCallback action;
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Row(
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 60,
-              color: Colors.blue,
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(fontSize: 25, color: Colors.grey.shade900),
-              ),
-            ),
-            IconButton(
-              onPressed: action,
-              icon: Icon(actionIcon),
-              iconSize: 35,
-              color: Colors.blue,
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  MenuData(
+      {required this.title,
+      required this.subtitle,
+      required this.icon,
+      required this.action});
 }

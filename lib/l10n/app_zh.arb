@@ -1,6 +1,10 @@
 {
     "userGuessTitle": "人猜機器",
     "machineGuessTitle": "機器猜人",
+    "gameRecordTitle": "歷史記錄",
+    "userGuessSubtitle": "在這個遊戲模式中，機器會隨機選出4個不相同的數字，你要在猜測多次後，成功猜到這4個數字。",
+    "machineGuessSubtitle": "在這個遊戲模式中，機器會詢問你它猜的4個數字是否正確直到它成功猜到，你要回覆它xAyB。只要你每次都正確回答，它將正確猜出。",
+    "gameRecordSubtitle": "這裡記錄著你每次玩遊戲猜測的次數，你可以查看或刪除這些資料。",
     "bestRecordTitle": "最佳紀錄",
     "licenseTitle": "授權",
     "bestRecordWithContent": "你的最佳紀錄是: {bestRecord}。",
@@ -30,5 +34,11 @@
     "quitTitle": "放棄",
     "quitContent": "您確定要放棄並查看答案嗎?",
     "youQuitTitle": "你放棄了!",
-    "youQuitContent": "答案是{ans}。"
+    "youQuitContent": "答案是{ans}。",
+    "completePreparation": "已完成準備，請開始遊戲!",
+    "times": "{times}次",
+    "deleteAllRecordTitle": "刪除全部記錄",
+    "deleteAllRecordContent": "刪除後將無法復原!",
+    "deleteBtn": "刪除",
+    "cancelBtn": "取消"
 }
