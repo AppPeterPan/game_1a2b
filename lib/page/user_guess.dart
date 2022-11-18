@@ -9,12 +9,13 @@ import 'package:game_1a2b/keyboard/num_keyboard.dart';
 import 'package:share_plus/share_plus.dart';
 
 class UserGuessPage extends StatelessWidget {
-  const UserGuessPage({super.key});
+  const UserGuessPage({super.key, required this.numLength});
 
+  final int numLength;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserGuessCubit(),
+      create: (context) => UserGuessCubit(numLength: numLength),
       child: WillPopScope(
         onWillPop: () async {
           bool exit = false;
@@ -55,21 +56,27 @@ class UserGuessPage extends StatelessWidget {
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             floatingActionButton: const QuitBtn(),
             body: OrientationBuilder(builder: (context, orientation) {
+              final numKeyboard = NumKeyboard(
+                numLength: numLength,
+              );
+              final userGuessGame = _UserGuessGame(
+                numLength: numLength,
+              );
               switch (orientation) {
                 case Orientation.portrait:
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Expanded(child: _UserGuessGame()),
-                      NumKeyboard()
+                    children: <Widget>[
+                      Expanded(child: userGuessGame),
+                      numKeyboard
                     ],
                   );
                 case Orientation.landscape:
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Expanded(child: NumKeyboard()),
-                      Expanded(child: _UserGuessGame())
+                    children: <Widget>[
+                      Expanded(child: numKeyboard),
+                      Expanded(child: userGuessGame)
                     ],
                   );
               }
@@ -137,7 +144,8 @@ class QuitBtn extends StatelessWidget {
 }
 
 class _UserGuessGame extends StatelessWidget {
-  const _UserGuessGame();
+  const _UserGuessGame({required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +156,7 @@ class _UserGuessGame extends StatelessWidget {
             _listController.animateTo(_listController.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
-        if (state.guessRecord[state.guessRecord.length - 1].a == 4) {
+        if (state.guessRecord[state.guessRecord.length - 1].a == numLength) {
           BlocProvider.of<HistoryCubit>(context).addRecord(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 0,

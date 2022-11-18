@@ -95,7 +95,7 @@ class HomePage extends StatelessWidget {
           subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
           icon: Icons.person,
           action: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const UserGuessPage()))),
+              .push(MaterialPageRoute(builder: (_) => const UserGuessPage(numLength: 4,)))),
       MenuData(
           title: AppLocalizations.of(context)!.machineGuessTitle,
           subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
@@ -121,7 +121,7 @@ class HomePage extends StatelessWidget {
           itemCount: menuDataList.length,
           itemBuilder: (context, idx) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
               child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),

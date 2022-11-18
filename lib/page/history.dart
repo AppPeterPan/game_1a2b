@@ -18,36 +18,46 @@ class HistoryPage extends StatelessWidget {
       ),
       body: BlocBuilder<HistoryCubit, HistoryState>(
         builder: (context, state) {
-          return ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: state.gameRecordList.length,
-            itemBuilder: (context, idx) {
-              IconData leading = Icons.circle;
-              String title = '';
-              final String subtitle = AppLocalizations.of(context)!
-                  .times(state.gameRecordList[idx].times.toString());
-              final String timeString =
-                  state.gameRecordList[idx].dateTime.toString();
-              final String trailing =
-                  timeString.substring(0, timeString.indexOf('.'));
-              switch (state.gameRecordList[idx].gameMode) {
-                case 0:
-                  leading = Icons.person;
-                  title = AppLocalizations.of(context)!.userGuessTitle;
-                  break;
-                case 1:
-                  leading = Icons.devices;
-                  title = AppLocalizations.of(context)!.machineGuessTitle;
-                  break;
-              }
-              return ListTile(
-                leading: Icon(leading),
-                title: Text(title),
-                subtitle: Text(subtitle),
-                trailing: Text(trailing),
-              );
-            },
-          );
+          if (state.gameRecordList.isEmpty) {
+            return Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                 'No game record yet, let\'s start the game first!',
+                  style: const TextStyle(fontSize: 25),
+                ));
+          } else {
+            return ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: state.gameRecordList.length,
+              itemBuilder: (context, idx) {
+                IconData leading = Icons.circle;
+                String title = '';
+                final String subtitle = AppLocalizations.of(context)!
+                    .times(state.gameRecordList[idx].times.toString());
+                final String timeString =
+                    state.gameRecordList[idx].dateTime.toString();
+                final String trailing =
+                    timeString.substring(0, timeString.indexOf('.'));
+                switch (state.gameRecordList[idx].gameMode) {
+                  case 0:
+                    leading = Icons.person;
+                    title = AppLocalizations.of(context)!.userGuessTitle;
+                    break;
+                  case 1:
+                    leading = Icons.devices;
+                    title = AppLocalizations.of(context)!.machineGuessTitle;
+                    break;
+                }
+                return ListTile(
+                  leading: Icon(leading),
+                  title: Text(title),
+                  subtitle: Text(subtitle),
+                  trailing: Text(trailing),
+                );
+              },
+            );
+          }
         },
       ),
     );

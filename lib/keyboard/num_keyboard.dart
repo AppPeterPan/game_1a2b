@@ -5,7 +5,8 @@ import 'package:game_1a2b/cubit/num_keyboard_cubit.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 
 class NumKeyboard extends StatelessWidget {
-  const NumKeyboard({super.key});
+  const NumKeyboard({super.key, required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class NumKeyboard extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ));
     return BlocProvider(
-      create: (context) => NumKeyboardCubit(),
+      create: (context) => NumKeyboardCubit(numLength: numLength),
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.all(10),
@@ -28,7 +29,8 @@ class NumKeyboard extends StatelessWidget {
                 textButtonStyle: textButtonStyle,
                 startNum: i * 3 + 1,
               ),
-            _KeyboardActionRow(textButtonStyle: textButtonStyle)
+            _KeyboardActionRow(
+                numLength: numLength, textButtonStyle: textButtonStyle)
           ],
         ),
       ),
@@ -85,8 +87,11 @@ class _KeyboardNumRow extends StatelessWidget {
 }
 
 class _KeyboardActionRow extends StatelessWidget {
-  const _KeyboardActionRow({required this.textButtonStyle});
+  const _KeyboardActionRow(
+      {required this.numLength, required this.textButtonStyle});
+  final int numLength;
   final ButtonStyle textButtonStyle;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -104,7 +109,7 @@ class _KeyboardActionRow extends StatelessWidget {
               onPressed: (() {
                 String num =
                     BlocProvider.of<NumKeyboardCubit>(context).state.inputNum;
-                if (num.length == 4) {
+                if (num.length == numLength) {
                   BlocProvider.of<NumKeyboardCubit>(context).clear();
                   BlocProvider.of<UserGuessCubit>(context).guess(num);
                 }

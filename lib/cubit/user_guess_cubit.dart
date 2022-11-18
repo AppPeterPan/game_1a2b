@@ -5,14 +5,17 @@ import 'package:game_1a2b/guess.dart';
 part 'user_guess_state.dart';
 
 class UserGuessCubit extends Cubit<UserGuessState> {
-  UserGuessCubit() : super(UserGuessState(answer: '1234', guessRecord: [])) {
+  UserGuessCubit({required this.numLength})
+      : super(UserGuessState(answer: '1234', guessRecord: [])) {
     start();
   }
+
+  final int numLength;
 
   void start() {
     String ansString = '';
     List numList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    for (int i = 9; i > 5; i--) {
+    for (int i = 9; i > 9-numLength; i--) {
       int ranNum = Random().nextInt(i);
       ansString = ansString + numList[ranNum].toString();
       numList.removeAt(ranNum);
@@ -26,8 +29,8 @@ class UserGuessCubit extends Cubit<UserGuessState> {
     List<GuessData> guessRecord = state.guessRecord;
     int a = 0;
     int b = 0;
-    for (int i1 = 0; i1 < 4; i1++) {
-      for (int i2 = 0; i2 < 4; i2++) {
+    for (int i1 = 0; i1 < numLength; i1++) {
+      for (int i2 = 0; i2 < numLength; i2++) {
         if (num[i1] == ansString[i2]) {
           if (i1 == i2) {
             a++;
