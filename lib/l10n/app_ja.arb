@@ -29,7 +29,7 @@
   "closeAndRetryBtn": "再起動します",
   "machineGuessedTitle": "機械はそれを推測しました！",
   "machineGuessedContent": "{times}回かかりました。",
-  "inputNumberHint": "4つの異なる数字",
+  "inputNumberHint": "{numLength}つの異なる数字",
   "quitBtn": "あきらめる",
   "quitTitle": "あきらめる",
   "quitContent": "あきらめて答えを得たいですか？",
@@ -40,5 +40,6 @@
   "deleteAllRecordTitle": "すべてのレコードを削除",
   "deleteAllRecordContent": "一度削除すると元に戻せません！",
   "deleteBtn": "消去",
-  "cancelBtn": "キャンセル"
+  "cancelBtn": "キャンセル",
+  "noGameRecord": "まだ記録がありません。まずはゲームを始めましょう。"
 }

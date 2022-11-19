@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
         onSelected: (val) {
           switch (val) {
             case HomePagePopupItem.bestRecord:
-              SharedPreferencesUtil().getBsetScore().then(
+              SPUtil().getBsetScore().then(
                 (bestRecord) {
                   showDialog(
                       context: context,
@@ -62,14 +62,14 @@ class HomePage extends StatelessWidget {
                         );
                       }).then((value) {
                     if (value == true) {
-                      SharedPreferencesUtil().resetBestScore();
+                      SPUtil().resetBestScore();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                             AppLocalizations.of(context)!.bestRecordCleared),
                         action: SnackBarAction(
                           label: AppLocalizations.of(context)!.undoBtn,
                           onPressed: () =>
-                              SharedPreferencesUtil().setBestScore(bestRecord),
+                              SPUtil().setBestScore(bestRecord),
                         ),
                         duration: const Duration(milliseconds: 2500),
                       ));
@@ -94,14 +94,18 @@ class HomePage extends StatelessWidget {
           title: AppLocalizations.of(context)!.userGuessTitle,
           subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
           icon: Icons.person,
-          action: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const UserGuessPage(numLength: 4,)))),
+          action: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => const UserGuessPage(
+                    numLength: 4,
+                  )))),
       MenuData(
           title: AppLocalizations.of(context)!.machineGuessTitle,
           subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
           icon: Icons.devices,
-          action: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const MachineGuessPage()))),
+          action: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (_) => const MachineGuessPage(
+                    numLength: 4,
+                  )))),
       MenuData(
           title: AppLocalizations.of(context)!.gameRecordTitle,
           subtitle: AppLocalizations.of(context)!.gameRecordSubtitle,
@@ -121,7 +125,8 @@ class HomePage extends StatelessWidget {
           itemCount: menuDataList.length,
           itemBuilder: (context, idx) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
               child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),

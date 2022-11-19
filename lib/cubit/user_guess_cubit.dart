@@ -6,7 +6,8 @@ part 'user_guess_state.dart';
 
 class UserGuessCubit extends Cubit<UserGuessState> {
   UserGuessCubit({required this.numLength})
-      : super(UserGuessState(answer: '1234', guessRecord: [])) {
+      : super(UserGuessState(
+            answer: '1234567890'.substring(0, numLength), guessRecord: [])) {
     start();
   }
 
@@ -15,7 +16,7 @@ class UserGuessCubit extends Cubit<UserGuessState> {
   void start() {
     String ansString = '';
     List numList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    for (int i = 9; i > 9-numLength; i--) {
+    for (int i = 9; i > 9 - numLength; i--) {
       int ranNum = Random().nextInt(i);
       ansString = ansString + numList[ranNum].toString();
       numList.removeAt(ranNum);

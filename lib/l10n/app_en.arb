@@ -161,9 +161,15 @@
             }
         }
     },
-    "inputNumberHint": "4 unique numbers",
+    "inputNumberHint": "{numLength} unique numbers",
     "@inputNumberHint": {
-        "description": ""
+        "description": "",
+        "placeholders": {
+            "numLength": {
+                "type": "String",
+                "example": "4"
+            }
+        }
     },
     "quitBtn": "Quit",
     "@quitBtn": {
@@ -219,6 +225,10 @@
     },
     "cancelBtn": "Cancel",
     "@cancelBtn": {
+        "description": ""
+    },
+    "noGameRecord": "No record yet, let's start the game!",
+    "@noGameRecord": {
         "description": ""
     }
 }

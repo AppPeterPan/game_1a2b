@@ -29,7 +29,7 @@
     "closeAndRetryBtn": "重新開始",
     "machineGuessedTitle": "機器猜到了!",
     "machineGuessedContent": "它花了{times}次。",
-    "inputNumberHint": "4個不重複的數字",
+    "inputNumberHint": "{numLength}個不重複的數字",
     "quitBtn": "放棄",
     "quitTitle": "放棄",
     "quitContent": "您確定要放棄並查看答案嗎?",
@@ -40,5 +40,6 @@
     "deleteAllRecordTitle": "刪除全部記錄",
     "deleteAllRecordContent": "刪除後將無法復原!",
     "deleteBtn": "刪除",
-    "cancelBtn": "取消"
+    "cancelBtn": "取消",
+    "noGameRecord": "尚無記錄，快開始遊戲吧!"
 }

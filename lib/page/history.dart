@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_1a2b/cubit/history_cubit.dart';
+import 'package:game_1a2b/data.dart';
+import 'package:game_1a2b/game_record.dart';
 import 'package:game_1a2b/l10n.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -16,46 +16,52 @@ class HistoryPage extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.gameRecordTitle),
         actions: appBarActions,
       ),
-      body: BlocBuilder<HistoryCubit, HistoryState>(
-        builder: (context, state) {
-          if (state.gameRecordList.isEmpty) {
-            return Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                 'No game record yet, let\'s start the game first!',
-                  style: const TextStyle(fontSize: 25),
-                ));
+      body: FutureBuilder<List<GameRecord>>(
+        future: SPUtil().getHistory(),
+        builder: (context, snap) {
+          if (snap.hasData) {
+            if (snap.data!.isEmpty) {
+              return Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    AppLocalizations.of(context)!.noGameRecord,
+                    style: const TextStyle(fontSize: 25),
+                  ));
+            } else {
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: snap.data!.length,
+                itemBuilder: (context, idx) {
+                  IconData leading = Icons.circle;
+                  String title = '';
+                  final String subtitle = AppLocalizations.of(context)!
+                      .times(snap.data![idx].times.toString());
+                  final String timeString = snap.data![idx].dateTime.toString();
+                  final String trailing =
+                      timeString.substring(0, timeString.indexOf('.'));
+                  switch (snap.data![idx].gameMode) {
+                    case 0:
+                      leading = Icons.person;
+                      title = AppLocalizations.of(context)!.userGuessTitle;
+                      break;
+                    case 1:
+                      leading = Icons.devices;
+                      title = AppLocalizations.of(context)!.machineGuessTitle;
+                      break;
+                  }
+                  return ListTile(
+                    leading: Icon(leading),
+                    title: Text(title),
+                    subtitle: Text(subtitle),
+                    trailing: Text(trailing),
+                  );
+                },
+              );
+            }
           } else {
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.gameRecordList.length,
-              itemBuilder: (context, idx) {
-                IconData leading = Icons.circle;
-                String title = '';
-                final String subtitle = AppLocalizations.of(context)!
-                    .times(state.gameRecordList[idx].times.toString());
-                final String timeString =
-                    state.gameRecordList[idx].dateTime.toString();
-                final String trailing =
-                    timeString.substring(0, timeString.indexOf('.'));
-                switch (state.gameRecordList[idx].gameMode) {
-                  case 0:
-                    leading = Icons.person;
-                    title = AppLocalizations.of(context)!.userGuessTitle;
-                    break;
-                  case 1:
-                    leading = Icons.devices;
-                    title = AppLocalizations.of(context)!.machineGuessTitle;
-                    break;
-                }
-                return ListTile(
-                  leading: Icon(leading),
-                  title: Text(title),
-                  subtitle: Text(subtitle),
-                  trailing: Text(trailing),
-                );
-              },
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
         },
@@ -95,7 +101,8 @@ class _DeleteRecordBtn extends StatelessWidget {
                 );
               }).then((value) {
             if (value) {
-              BlocProvider.of<HistoryCubit>(context).deleteAllRecord();
+              SPUtil().resetHistory();
+              Navigator.of(context).pop();
             }
           });
         },

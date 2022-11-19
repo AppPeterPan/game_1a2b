@@ -4,7 +4,8 @@ import 'package:game_1a2b/cubit/ab_keyboard_cubit.dart';
 import 'package:game_1a2b/cubit/machine_guess_cubit.dart';
 
 class ABKeyboard extends StatelessWidget {
-  const ABKeyboard({super.key});
+  const ABKeyboard({super.key, required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ABKeyboard extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ));
     return BlocProvider(
-      create: (context) => ABKeyboardCubit(),
+      create: (context) => ABKeyboardCubit(numLength: numLength),
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.all(10),
@@ -22,8 +23,10 @@ class ABKeyboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const _KeyboardInputContent(),
-            _KeyboardARow(textButtonStyle: textButtonStyle),
-            _KeyboardBRow(textButtonStyle: textButtonStyle)
+            _KeyboardARow(
+                numLength: numLength, textButtonStyle: textButtonStyle),
+            _KeyboardBRow(
+                numLength: numLength, textButtonStyle: textButtonStyle)
           ],
         ),
       ),
@@ -75,8 +78,10 @@ class _KeyboardInputContent extends StatelessWidget {
 }
 
 class _KeyboardARow extends StatelessWidget {
-  const _KeyboardARow({required this.textButtonStyle});
+  const _KeyboardARow({required this.numLength, required this.textButtonStyle});
+  final int numLength;
   final ButtonStyle textButtonStyle;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -86,9 +91,9 @@ class _KeyboardARow extends StatelessWidget {
           'A: ',
           style: TextStyle(fontSize: 25),
         ),
-        for (int i = 0; i <= 4; i++)
+        for (int i = 0; i <= numLength; i++)
           SizedBox(
-              width: 60,
+              width: 50,
               height: 60,
               child: TextButton(
                   onPressed: () {
@@ -102,8 +107,10 @@ class _KeyboardARow extends StatelessWidget {
 }
 
 class _KeyboardBRow extends StatelessWidget {
-  const _KeyboardBRow({required this.textButtonStyle});
+  const _KeyboardBRow({required this.numLength, required this.textButtonStyle});
+  final int numLength;
   final ButtonStyle textButtonStyle;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ABKeyboardCubit, ABKeyboardState>(
@@ -115,12 +122,13 @@ class _KeyboardBRow extends StatelessWidget {
               'B: ',
               style: TextStyle(fontSize: 25),
             ),
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= numLength; i++)
               SizedBox(
-                  width: 60,
+                  width: 50,
                   height: 60,
                   child: TextButton(
-                      onPressed: state.a + i > 4 || (state.a == 3 && i == 1)
+                      onPressed: state.a + i > numLength ||
+                              (state.a == numLength - 1 && i == 1)
                           ? null
                           : () {
                               BlocProvider.of<ABKeyboardCubit>(context)

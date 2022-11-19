@@ -23,7 +23,9 @@ class NumKeyboard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const _KeyboardInputContent(),
+            _KeyboardInputContent(
+              numLength: numLength,
+            ),
             for (int i = 0; i < 3; i++)
               _KeyboardNumRow(
                 textButtonStyle: textButtonStyle,
@@ -39,7 +41,8 @@ class NumKeyboard extends StatelessWidget {
 }
 
 class _KeyboardInputContent extends StatelessWidget {
-  const _KeyboardInputContent();
+  const _KeyboardInputContent({required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class _KeyboardInputContent extends StatelessWidget {
         );
       } else {
         return Text(
-          AppLocalizations.of(context)!.inputNumberHint,
+          AppLocalizations.of(context)!.inputNumberHint(numLength.toString()),
           style: const TextStyle(color: Colors.grey, fontSize: 25),
         );
       }

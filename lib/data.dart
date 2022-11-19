@@ -1,12 +1,12 @@
+import 'package:game_1a2b/game_record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesUtil {
-  static final SharedPreferencesUtil _spu =
-      SharedPreferencesUtil._privConstructor();
+class SPUtil {
+  static final SPUtil _spu = SPUtil._privConstructor();
 
-  factory SharedPreferencesUtil() => _spu;
+  factory SPUtil() => _spu;
 
-  SharedPreferencesUtil._privConstructor();
+  SPUtil._privConstructor();
 
   final String _keyBest = 'best';
   final String _keyHistory = 'history';
@@ -16,34 +16,43 @@ class SharedPreferencesUtil {
     return sp.getInt(_keyBest);
   }
 
-  void resetBestScore() async {
+  Future<void> resetBestScore() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.remove(_keyBest);
+    await sp.remove(_keyBest);
   }
 
   Future<int> setBestScore(score) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    var bestScore = sp.getInt(_keyBest);
-    if (bestScore is int && score > bestScore) {
-      return bestScore;
+    var data = sp.getInt(_keyBest);
+    if (data is int && score > data) {
+      return data;
     } else {
       sp.setInt(_keyBest, score);
       return score;
     }
   }
 
-  Future<List<String>?> getHistory() async {
+  Future<List<GameRecord>> getHistory() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    return sp.getStringList(_keyHistory);
+    var data = sp.getStringList(_keyHistory);
+    if (data is List<String>) {
+      return [
+        for (int i = 0; i < data.length; i++) GameRecord.fromJson(data[i])
+      ];
+    } else {
+      return [];
+    }
   }
 
-  void resetHistory() async {
+  Future<void> resetHistory() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.remove(_keyHistory);
+    await sp.remove(_keyHistory);
   }
 
-  void setHistory(List<String> history) async {
+  Future<void> addHistory(GameRecord gameRecord) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    sp.setStringList(_keyHistory, history);
+    List<String> data = sp.getStringList(_keyHistory) ?? [];
+    data.add(gameRecord.toJson());
+    await sp.setStringList(_keyHistory, data);
   }
 }

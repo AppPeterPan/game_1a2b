@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_1a2b/cubit/history_cubit.dart';
 import 'package:game_1a2b/game_record.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
@@ -157,13 +156,11 @@ class _UserGuessGame extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
         if (state.guessRecord[state.guessRecord.length - 1].a == numLength) {
-          BlocProvider.of<HistoryCubit>(context).addRecord(GameRecord(
+          SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 0,
               times: state.guessRecord.length));
-          SharedPreferencesUtil()
-              .setBestScore(state.guessRecord.length)
-              .then(((bestRecord) {
+          SPUtil().setBestScore(state.guessRecord.length).then((bestRecord) {
             showDialog(
                 barrierDismissible: false,
                 context: context,
@@ -196,7 +193,7 @@ class _UserGuessGame extends StatelessWidget {
                 }).then((value) {
               Navigator.of(context).pop();
             });
-          }));
+          });
         }
       },
       builder: (context, state) {

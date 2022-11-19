@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_1a2b/cubit/history_cubit.dart';
+import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/game_record.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/machine_guess_cubit.dart';
 import 'package:game_1a2b/keyboard/ab_keyboard.dart';
 
 class MachineGuessPage extends StatelessWidget {
-  const MachineGuessPage({super.key});
+  const MachineGuessPage({super.key, required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MachineGuessCubit(),
+      create: (context) => MachineGuessCubit(numLength: numLength),
       child: WillPopScope(
         onWillPop: () async {
           bool exit = false;
@@ -51,23 +52,28 @@ class MachineGuessPage extends StatelessWidget {
             title: Text(AppLocalizations.of(context)!.machineGuessTitle),
           ),
           body: OrientationBuilder(builder: (context, orientation) {
+            final abKeyboard = ABKeyboard(
+              numLength: numLength,
+            );
+            final machineGuessGame = _MachineGuessGame(
+              numLength: numLength,
+            );
             switch (orientation) {
               case Orientation.portrait:
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Expanded(child: _MachineGuessGame()),
-                    ABKeyboard()
+                  children: <Widget>[
+                    Expanded(child: machineGuessGame),
+                    abKeyboard
                   ],
                 );
               case Orientation.landscape:
                 return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Expanded(child: ABKeyboard()),
-                    Expanded(child: _MachineGuessGame())
-                  ],
-                );
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(child: abKeyboard),
+                      Expanded(child: machineGuessGame)
+                    ]);
             }
           }),
         ),
@@ -77,7 +83,8 @@ class MachineGuessPage extends StatelessWidget {
 }
 
 class _MachineGuessGame extends StatelessWidget {
-  const _MachineGuessGame();
+  const _MachineGuessGame({required this.numLength});
+  final int numLength;
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +115,9 @@ class _MachineGuessGame extends StatelessWidget {
                   ],
                 );
               }).then((value) => Navigator.of(context).pop());
-        } else if (state.guessRecord[state.guessRecord.length - 1].a == 4) {
-          BlocProvider.of<HistoryCubit>(context).addRecord(GameRecord(
+        } else if (state.guessRecord[state.guessRecord.length - 1].a ==
+            numLength) {
+          SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 1,
               times: state.guessRecord.length));
