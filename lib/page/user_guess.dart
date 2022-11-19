@@ -159,8 +159,12 @@ class _UserGuessGame extends StatelessWidget {
           SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 0,
-              times: state.guessRecord.length));
-          SPUtil().setBestScore(state.guessRecord.length).then((bestRecord) {
+              times: state.guessRecord.length,
+              numLength: numLength));
+          SPUtil()
+              .setBestScore(
+                  numLength: numLength, score: state.guessRecord.length)
+              .then((bestRecord) {
             showDialog(
                 barrierDismissible: false,
                 context: context,

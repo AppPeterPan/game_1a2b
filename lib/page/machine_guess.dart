@@ -120,7 +120,8 @@ class _MachineGuessGame extends StatelessWidget {
           SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 1,
-              times: state.guessRecord.length));
+              times: state.guessRecord.length,
+              numLength: numLength));
           showDialog(
               barrierDismissible: false,
               context: context,

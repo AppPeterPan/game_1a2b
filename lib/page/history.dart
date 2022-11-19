@@ -35,8 +35,8 @@ class HistoryPage extends StatelessWidget {
                 itemBuilder: (context, idx) {
                   IconData leading = Icons.circle;
                   String title = '';
-                  final String subtitle = AppLocalizations.of(context)!
-                      .times(snap.data![idx].times.toString());
+                  final String subtitle =
+                      '${AppLocalizations.of(context)!.xNumbers(snap.data![idx].numLength.toString())} | ${AppLocalizations.of(context)!.times(snap.data![idx].times.toString())}';
                   final String timeString = snap.data![idx].dateTime.toString();
                   final String trailing =
                       timeString.substring(0, timeString.indexOf('.'));

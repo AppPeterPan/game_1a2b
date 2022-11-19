@@ -30,19 +30,22 @@ class HomePage extends StatelessWidget {
         onSelected: (val) {
           switch (val) {
             case HomePagePopupItem.bestRecord:
-              SPUtil().getBsetScore().then(
-                (bestRecord) {
+              SPUtil().getBsetScores(numLengthList: [3, 4, 5]).then(
+                (bestRecords) {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
                           title: Text(
                               AppLocalizations.of(context)!.bestRecordTitle),
-                          content: Text(bestRecord is int
-                              ? AppLocalizations.of(context)!
-                                  .bestRecordWithContent(bestRecord.toString())
-                              : AppLocalizations.of(context)!
-                                  .bestRecordWithoutContent),
+                          content: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              for (int i = 0; i < bestRecords.length; i++)
+                                TextSpan(
+                                    text:
+                                        '${AppLocalizations.of(context)!.xNumbers(bestRecords[i]['nl'].toString())}: ${bestRecords[i]['br'] is int ? AppLocalizations.of(context)!.bestRecordWithContent(bestRecords[i]['br'].toString()) : AppLocalizations.of(context)!.bestRecordWithoutContent}${i < bestRecords.length - 1 ? '\n' : ''}')
+                            ]),
+                          ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           actions: [
@@ -62,14 +65,19 @@ class HomePage extends StatelessWidget {
                         );
                       }).then((value) {
                     if (value == true) {
-                      SPUtil().resetBestScore();
+                      SPUtil().resetBestScore(numLengthList: [3, 4, 5]);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                             AppLocalizations.of(context)!.bestRecordCleared),
                         action: SnackBarAction(
                           label: AppLocalizations.of(context)!.undoBtn,
-                          onPressed: () =>
-                              SPUtil().setBestScore(bestRecord),
+                          onPressed: () {
+                            for (int i = 0; i < bestRecords.length; i++) {
+                              SPUtil().setBestScore(
+                                  numLength: bestRecords[i]['nl']!,
+                                  score: bestRecords[i]['br']!);
+                            }
+                          },
                         ),
                         duration: const Duration(milliseconds: 2500),
                       ));
@@ -91,27 +99,68 @@ class HomePage extends StatelessWidget {
 
     final List<MenuData> menuDataList = [
       MenuData(
-          title: AppLocalizations.of(context)!.userGuessTitle,
-          subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
-          icon: Icons.person,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const UserGuessPage(
-                    numLength: 4,
-                  )))),
+        title: AppLocalizations.of(context)!.userGuessTitle,
+        subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+        icon: Icons.person,
+        multiAction: [
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('3'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessPage(
+                      numLength: 3,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('4'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessPage(
+                      numLength: 4,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('5'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessPage(
+                      numLength: 5,
+                    ))),
+          )
+        ],
+      ),
       MenuData(
-          title: AppLocalizations.of(context)!.machineGuessTitle,
-          subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
-          icon: Icons.devices,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const MachineGuessPage(
-                    numLength: 4,
-                  )))),
+        title: AppLocalizations.of(context)!.machineGuessTitle,
+        subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
+        icon: Icons.devices,
+        multiAction: [
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('3'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const MachineGuessPage(
+                      numLength: 3,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('4'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const MachineGuessPage(
+                      numLength: 4,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('5'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const MachineGuessPage(
+                      numLength: 5,
+                    ))),
+          )
+        ],
+      ),
       MenuData(
-          title: AppLocalizations.of(context)!.gameRecordTitle,
-          subtitle: AppLocalizations.of(context)!.gameRecordSubtitle,
-          icon: Icons.history,
-          action: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const HistoryPage()))),
+        title: AppLocalizations.of(context)!.gameRecordTitle,
+        subtitle: AppLocalizations.of(context)!.gameRecordSubtitle,
+        icon: Icons.history,
+        action: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const HistoryPage())),
+      ),
     ];
 
     return Scaffold(
@@ -120,11 +169,11 @@ class HomePage extends StatelessWidget {
         title: const Text('Game 1A2B'),
         actions: appBarActions,
       ),
-      body: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: menuDataList.length,
-          itemBuilder: (context, idx) {
-            return Padding(
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: <Widget>[
+          for (int idx = 0; idx < menuDataList.length; idx++)
+            Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
               child: Card(
@@ -137,45 +186,77 @@ class HomePage extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 20),
-                          child: Row(children: <Widget>[
-                            Icon(
-                              menuDataList[idx].icon,
-                              size: 60,
-                              color: Colors.blue,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                  Text(
-                                    menuDataList[idx].title,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    menuDataList[idx].subtitle,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
-                                ]))
-                          ]),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(
+                                  menuDataList[idx].icon,
+                                  size: 60,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                      Text(
+                                        menuDataList[idx].title,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          color: Colors.grey.shade900,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        menuDataList[idx].subtitle,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                      if (menuDataList[idx].multiAction
+                                          is List<MenuDataAction>)
+                                        for (int i = 0;
+                                            i <
+                                                menuDataList[idx]
+                                                        .multiAction!
+                                                        .length *
+                                                    2;
+                                            i++)
+                                          i % 2 == 0
+                                              ? const Divider()
+                                              : ListTile(
+                                                  title: Text(
+                                                    menuDataList[idx]
+                                                        .multiAction![
+                                                            ((i - 1) / 2)
+                                                                .round()]
+                                                        .title,
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                      color: Colors.blue,
+                                                    ),
+                                                  ),
+                                                  onTap: menuDataList[idx]
+                                                      .multiAction![
+                                                          ((i - 1) / 2).round()]
+                                                      .action,
+                                                )
+                                    ]))
+                              ]),
                         ),
                       ))),
-            );
-          }),
+            )
+        ],
+      ),
     );
   }
 }
@@ -184,10 +265,18 @@ class MenuData {
   final String title;
   final String subtitle;
   final IconData icon;
-  final VoidCallback action;
+  final VoidCallback? action;
+  final List<MenuDataAction>? multiAction;
   MenuData(
       {required this.title,
       required this.subtitle,
       required this.icon,
-      required this.action});
+      this.action,
+      this.multiAction});
+}
+
+class MenuDataAction {
+  final String title;
+  final VoidCallback? action;
+  MenuDataAction({required this.title, this.action});
 }

@@ -41,5 +41,6 @@
     "deleteAllRecordContent": "한번 삭제하면 복구 불가!",
     "deleteBtn": "삭제",
     "cancelBtn": "취소",
-    "noGameRecord": "아직 기록이 없습니다. 먼저 게임을 시작하세요!"
+    "noGameRecord": "아직 기록이 없습니다. 먼저 게임을 시작하세요!",
+    "xNumbers": "{num}자리"
 }

@@ -230,5 +230,15 @@
     "noGameRecord": "No record yet, let's start the game!",
     "@noGameRecord": {
         "description": ""
+    },
+    "xNumbers": "{num} Numbers",
+    "@xNumbers": {
+        "description": "",
+        "placeholders": {
+            "num": {
+                "type": "String",
+                "example": "4"
+            }
+        }
     }
 }

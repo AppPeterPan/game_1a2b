@@ -41,5 +41,6 @@
   "deleteAllRecordContent": "一度削除すると元に戻せません！",
   "deleteBtn": "消去",
   "cancelBtn": "キャンセル",
-  "noGameRecord": "まだ記録がありません。まずはゲームを始めましょう。"
+  "noGameRecord": "まだ記録がありません。まずはゲームを始めましょう。",
+  "xNumbers": "{num}ケタ"
 }
