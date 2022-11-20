@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,83 +44,89 @@ class _KeyboardInputContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
-      autofocus: true,
-      focusNode: FocusNode(),
-      onKey: (event) {
-        if (event is RawKeyDownEvent) {
-          if (event.isKeyPressed(LogicalKeyboardKey.digit0) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad0)) {
-            keyboardInput(context, 0);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.digit1) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad1)) {
-            keyboardInput(context, 1);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.digit2) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad2)) {
-            keyboardInput(context, 2);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.digit3) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad3)) {
-            keyboardInput(context, 3);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.digit4) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad4)) {
-            keyboardInput(context, 4);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.digit5) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpad5)) {
-            keyboardInput(context, 5);
-          } else if (event.isKeyPressed(LogicalKeyboardKey.enter) ||
-              event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
-            final int a = BlocProvider.of<ABKeyboardCubit>(context).state.a;
-            final int b = BlocProvider.of<ABKeyboardCubit>(context).state.b;
-            if (a > -1 && b > -1) {
-              BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
-              BlocProvider.of<ABKeyboardCubit>(context).clear();
-            }
-          } else if (event.isKeyPressed(LogicalKeyboardKey.delete) ||
-              event.isKeyPressed(LogicalKeyboardKey.backspace)) {
-            if (BlocProvider.of<ABKeyboardCubit>(context).state.b > -1) {
-              BlocProvider.of<ABKeyboardCubit>(context).inputB(-1);
-            } else if (BlocProvider.of<ABKeyboardCubit>(context).state.a > -1) {
-              BlocProvider.of<ABKeyboardCubit>(context).inputA(-1);
+    final centent = BlocBuilder<MachineGuessCubit, MachineGuessState>(
+      builder: (mgContext, mgState) {
+        return BlocBuilder<ABKeyboardCubit, ABKeyboardState>(
+            builder: (context, state) {
+          final question = mgState.question;
+          final a = state.a;
+          final b = state.b;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                '$question ${a >= 0 ? a : '?'}A${b >= 0 ? b : '?'}B',
+                style: const TextStyle(fontSize: 25),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.done,
+                  color: Colors.green,
+                ),
+                iconSize: 35,
+                onPressed: (() {
+                  if (a >= 0 && b >= 0) {
+                    BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
+                    BlocProvider.of<ABKeyboardCubit>(context).clear();
+                  }
+                }),
+              )
+            ],
+          );
+        });
+      },
+    );
+    if (kIsWeb) {
+      return RawKeyboardListener(
+        autofocus: true,
+        focusNode: FocusNode(),
+        onKey: (event) {
+          if (event is RawKeyDownEvent) {
+            if (event.isKeyPressed(LogicalKeyboardKey.digit0) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad0)) {
+              keyboardInput(context, 0);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.digit1) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad1)) {
+              keyboardInput(context, 1);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.digit2) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad2)) {
+              keyboardInput(context, 2);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.digit3) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad3)) {
+              keyboardInput(context, 3);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.digit4) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad4)) {
+              keyboardInput(context, 4);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.digit5) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpad5)) {
+              keyboardInput(context, 5);
+            } else if (event.isKeyPressed(LogicalKeyboardKey.enter) ||
+                event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
+              final int a = BlocProvider.of<ABKeyboardCubit>(context).state.a;
+              final int b = BlocProvider.of<ABKeyboardCubit>(context).state.b;
+              if (a > -1 && b > -1) {
+                BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
+                BlocProvider.of<ABKeyboardCubit>(context).clear();
+              }
+            } else if (event.isKeyPressed(LogicalKeyboardKey.delete) ||
+                event.isKeyPressed(LogicalKeyboardKey.backspace)) {
+              if (BlocProvider.of<ABKeyboardCubit>(context).state.b > -1) {
+                BlocProvider.of<ABKeyboardCubit>(context).inputB(-1);
+              } else if (BlocProvider.of<ABKeyboardCubit>(context).state.a >
+                  -1) {
+                BlocProvider.of<ABKeyboardCubit>(context).inputA(-1);
+              }
             }
           }
-        }
-      },
-      child: BlocBuilder<MachineGuessCubit, MachineGuessState>(
-        builder: (mgContext, mgState) {
-          return BlocBuilder<ABKeyboardCubit, ABKeyboardState>(
-              builder: (context, state) {
-            final question = mgState.question;
-            final a = state.a;
-            final b = state.b;
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '$question ${a >= 0 ? a : '?'}A${b >= 0 ? b : '?'}B',
-                  style: const TextStyle(fontSize: 25),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.done,
-                    color: Colors.green,
-                  ),
-                  iconSize: 35,
-                  onPressed: (() {
-                    if (a >= 0 && b >= 0) {
-                      BlocProvider.of<MachineGuessCubit>(context).answer(a, b);
-                      BlocProvider.of<ABKeyboardCubit>(context).clear();
-                    }
-                  }),
-                )
-              ],
-            );
-          });
         },
-      ),
-    );
+        child: centent,
+      );
+    } else {
+      return centent;
+    }
   }
 
   void keyboardInput(BuildContext context, int inputNum) {
