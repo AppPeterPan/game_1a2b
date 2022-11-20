@@ -4,6 +4,7 @@ import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/page/history.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
+import 'package:game_1a2b/page/user_guess_low_luck.dart';
 
 enum HomePagePopupItem { bestRecord, license }
 
@@ -123,6 +124,34 @@ class HomePage extends StatelessWidget {
             title: AppLocalizations.of(context)!.xNumbers('5'),
             action: () => Navigator.of(context).push(MaterialPageRoute(
                 builder: (_) => const UserGuessPage(
+                      numLength: 5,
+                    ))),
+          )
+        ],
+      ),
+      MenuData(
+        title: 'User Guess Low Luck',
+        subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+        icon: Icons.person,
+        multiAction: [
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('3'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessLowLuckPage(
+                      numLength: 3,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('4'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessLowLuckPage(
+                      numLength: 4,
+                    ))),
+          ),
+          MenuDataAction(
+            title: AppLocalizations.of(context)!.xNumbers('5'),
+            action: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => const UserGuessLowLuckPage(
                       numLength: 5,
                     ))),
           )

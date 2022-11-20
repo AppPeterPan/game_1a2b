@@ -8,7 +8,7 @@ class ABKeyboardCubit extends Cubit<ABKeyboardState> {
   final int numLength;
 
   void inputA(int x) {
-    int b = super.state.b;
+    int b =state.b;
     if (x + b > numLength || (x == numLength - 1 && b == 1)) {
       b = 0;
     }
@@ -16,7 +16,7 @@ class ABKeyboardCubit extends Cubit<ABKeyboardState> {
   }
 
   void inputB(int x) {
-    int a = super.state.a;
+    int a = state.a;
     emit(ABKeyboardState(a: a, b: x));
   }
 

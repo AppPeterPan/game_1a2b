@@ -2,13 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_1a2b/cubit/user_guess_low_luck_cubit.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/num_keyboard_cubit.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 
+enum NumKeyboardGameType { userGuess, userGuessLowLuck }
+
 class NumKeyboard extends StatelessWidget {
-  const NumKeyboard({super.key, required this.numLength});
+  const NumKeyboard(
+      {super.key, required this.numLength, required this.numKeyboardGameType});
   final int numLength;
+  final NumKeyboardGameType numKeyboardGameType;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class NumKeyboard extends StatelessWidget {
           children: <Widget>[
             _KeyboardInputContent(
               numLength: numLength,
+              numKeyboardGameType: numKeyboardGameType,
             ),
             for (int i = 0; i < 3; i++)
               _KeyboardNumRow(
@@ -34,7 +40,9 @@ class NumKeyboard extends StatelessWidget {
                 startNum: i * 3 + 1,
               ),
             _KeyboardActionRow(
-                numLength: numLength, textButtonStyle: textButtonStyle)
+                numLength: numLength,
+                numKeyboardGameType: numKeyboardGameType,
+                textButtonStyle: textButtonStyle)
           ],
         ),
       ),
@@ -43,8 +51,10 @@ class NumKeyboard extends StatelessWidget {
 }
 
 class _KeyboardInputContent extends StatelessWidget {
-  const _KeyboardInputContent({required this.numLength});
+  const _KeyboardInputContent(
+      {required this.numLength, required this.numKeyboardGameType});
   final int numLength;
+  final NumKeyboardGameType numKeyboardGameType;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +115,14 @@ class _KeyboardInputContent extends StatelessWidget {
                   BlocProvider.of<NumKeyboardCubit>(context).state.inputNum;
               if (num.length == numLength) {
                 BlocProvider.of<NumKeyboardCubit>(context).clear();
-                BlocProvider.of<UserGuessCubit>(context).guess(num);
+                switch (numKeyboardGameType) {
+                  case NumKeyboardGameType.userGuess:
+                    BlocProvider.of<UserGuessCubit>(context).guess(num);
+                    break;
+                  case NumKeyboardGameType.userGuessLowLuck:
+                    BlocProvider.of<UserGuessLowLuckCubit>(context).guess(num);
+                    break;
+                }
               }
             } else if (event.isKeyPressed(LogicalKeyboardKey.delete) ||
                 event.isKeyPressed(LogicalKeyboardKey.backspace)) {
@@ -148,8 +165,11 @@ class _KeyboardNumRow extends StatelessWidget {
 
 class _KeyboardActionRow extends StatelessWidget {
   const _KeyboardActionRow(
-      {required this.numLength, required this.textButtonStyle});
+      {required this.numLength,
+      required this.numKeyboardGameType,
+      required this.textButtonStyle});
   final int numLength;
+  final NumKeyboardGameType numKeyboardGameType;
   final ButtonStyle textButtonStyle;
 
   @override
@@ -171,7 +191,15 @@ class _KeyboardActionRow extends StatelessWidget {
                     BlocProvider.of<NumKeyboardCubit>(context).state.inputNum;
                 if (num.length == numLength) {
                   BlocProvider.of<NumKeyboardCubit>(context).clear();
-                  BlocProvider.of<UserGuessCubit>(context).guess(num);
+                  switch (numKeyboardGameType) {
+                    case NumKeyboardGameType.userGuess:
+                      BlocProvider.of<UserGuessCubit>(context).guess(num);
+                      break;
+                    case NumKeyboardGameType.userGuessLowLuck:
+                      BlocProvider.of<UserGuessLowLuckCubit>(context)
+                          .guess(num);
+                      break;
+                  }
                 }
               }),
             )),

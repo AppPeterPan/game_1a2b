@@ -8,7 +8,7 @@ class NumKeyboardCubit extends Cubit<NumKeyboardState> {
   final int numLength;
 
   void input(int num) {
-    final inputNum = super.state.inputNum;
+    final inputNum = state.inputNum;
     if (inputNum.length < numLength && !inputNum.contains('$num')) {
       emit(NumKeyboardState(inputNum: '$inputNum$num'));
     }
@@ -19,7 +19,7 @@ class NumKeyboardCubit extends Cubit<NumKeyboardState> {
   }
 
   void backspace() {
-    final inputNum = super.state.inputNum;
+    final inputNum = state.inputNum;
     if (inputNum.isNotEmpty) {
       emit(NumKeyboardState(
           inputNum: inputNum.substring(0, inputNum.length - 1)));
