@@ -11,11 +11,11 @@
     "@gameRecordTitle": {
         "description": ""
     },
-    "userGuessSubtitle": "In this game mode, the machine will randomly select 4 different numbers, and you have to guess these 4 numbers successfully after guessing many times.",
+    "userGuessSubtitle": "In this game mode, you have to guess the number selected by the machine.",
     "@userGuessSubtitle": {
         "description": ""
     },
-    "machineGuessSubtitle": "In this game mode, the machine will ask you if it guessed the 4 numbers correctly until it guesses successfully, you have to reply xAyB to it. As long as you answer correctly every time, it will guess correctly.",
+    "machineGuessSubtitle": "In this game mode, you have to take a set of numbers as the answer and answer the question asked by the machine, and the machine will successfully guess it.",
     "@machineGuessSubtitle": {
         "description": ""
     },

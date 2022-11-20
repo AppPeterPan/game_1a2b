@@ -39,12 +39,14 @@ class HomePage extends StatelessWidget {
                           title: Text(
                               AppLocalizations.of(context)!.bestRecordTitle),
                           content: RichText(
-                            text: TextSpan(children: <TextSpan>[
-                              for (int i = 0; i < bestRecords.length; i++)
-                                TextSpan(
-                                    text:
-                                        '${AppLocalizations.of(context)!.xNumbers(bestRecords[i]['nl'].toString())}: ${bestRecords[i]['br'] is int ? AppLocalizations.of(context)!.bestRecordWithContent(bestRecords[i]['br'].toString()) : AppLocalizations.of(context)!.bestRecordWithoutContent}${i < bestRecords.length - 1 ? '\n' : ''}')
-                            ]),
+                            text: TextSpan(
+                                style: const TextStyle(color: Colors.black),
+                                children: <TextSpan>[
+                                  for (int i = 0; i < bestRecords.length; i++)
+                                    TextSpan(
+                                        text:
+                                            '${AppLocalizations.of(context)!.xNumbers(bestRecords[i]['nl'].toString())}: ${bestRecords[i]['br'] is int ? AppLocalizations.of(context)!.bestRecordWithContent(bestRecords[i]['br'].toString()) : AppLocalizations.of(context)!.bestRecordWithoutContent}${i < bestRecords.length - 1 ? '\n' : ''}')
+                                ]),
                           ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
@@ -169,19 +171,19 @@ class HomePage extends StatelessWidget {
         title: const Text('Game 1A2B'),
         actions: appBarActions,
       ),
-      body: ListView(
+      body: ListView.builder(
         physics: const BouncingScrollPhysics(),
-        children: <Widget>[
-          for (int idx = 0; idx < menuDataList.length; idx++)
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
-              child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: InkWell(
+        itemCount: menuDataList.length,
+        itemBuilder: (context, idx) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Column(
+                    children: [
+                      InkWell(
                         onTap: menuDataList[idx].action,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -222,40 +224,37 @@ class HomePage extends StatelessWidget {
                                           color: Colors.grey.shade700,
                                         ),
                                       ),
-                                      if (menuDataList[idx].multiAction
-                                          is List<MenuDataAction>)
-                                        for (int i = 0;
-                                            i <
-                                                menuDataList[idx]
-                                                        .multiAction!
-                                                        .length *
-                                                    2;
-                                            i++)
-                                          i % 2 == 0
-                                              ? const Divider()
-                                              : ListTile(
-                                                  title: Text(
-                                                    menuDataList[idx]
-                                                        .multiAction![
-                                                            ((i - 1) / 2)
-                                                                .round()]
-                                                        .title,
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.blue,
-                                                    ),
-                                                  ),
-                                                  onTap: menuDataList[idx]
-                                                      .multiAction![
-                                                          ((i - 1) / 2).round()]
-                                                      .action,
-                                                )
                                     ]))
                               ]),
                         ),
-                      ))),
-            )
-        ],
+                      ),
+                      if (menuDataList[idx].multiAction is List<MenuDataAction>)
+                        for (int i = 0;
+                            i < menuDataList[idx].multiAction!.length * 2;
+                            i++)
+                          i % 2 == 0
+                              ? const Divider(
+                                  thickness: 2.5,
+                                )
+                              : ListTile(
+                                  leading:
+                                      const Icon(Icons.play_circle_outline),
+                                  title: Text(
+                                    menuDataList[idx]
+                                        .multiAction![((i - 1) / 2).round()]
+                                        .title,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  onTap: menuDataList[idx]
+                                      .multiAction![((i - 1) / 2).round()]
+                                      .action,
+                                )
+                    ],
+                  ))),
+        ),
       ),
     );
   }
