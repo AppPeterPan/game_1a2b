@@ -20,39 +20,37 @@ class SPUtil {
     }
   }
 
-  Future<List<Map<String, int?>>> getBsetScores(
-      {required List<int> numLengthList}) async {
+  Future<List<Map<String, dynamic>>> getBsetScores(
+      {required List<String> tagList}) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    if (numLengthList.contains(4)) {
+    if (tagList.contains(4)) {
       await updateNewVersion();
     }
-    List<Map<String, int?>> datas = [];
-    for (int i = 0; i < numLengthList.length; i++) {
-      datas.add({
-        'nl': numLengthList[i],
-        'br': sp.getInt('${_keyBest}N${numLengthList[i]}')
-      });
+    List<Map<String, dynamic>> datas = [];
+    for (int i = 0; i < tagList.length; i++) {
+      datas.add(
+          {'nl': tagList[i], 'br': sp.getInt('${_keyBest}N${tagList[i]}')});
     }
     return datas;
   }
 
-  Future<void> resetBestScore({required List<int> numLengthList}) async {
+  Future<void> resetBestScore({required List<String> tagList}) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    for (int i = 0; i < numLengthList.length; i++) {
-      await sp.remove('${_keyBest}N${numLengthList[i]}');
+    for (int i = 0; i < tagList.length; i++) {
+      await sp.remove('${_keyBest}N${tagList[i]}');
     }
   }
 
-  Future<int> setBestScore({required int numLength, required int score}) async {
+  Future<int> setBestScore({required String tag, required int score}) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    if (numLength == 4) {
+    if (tag == '4') {
       await updateNewVersion();
     }
-    var data = sp.getInt('${_keyBest}N$numLength');
+    var data = sp.getInt('${_keyBest}N$tag');
     if (data is int && score > data) {
       return data;
     } else {
-      await sp.setInt('${_keyBest}N$numLength', score);
+      await sp.setInt('${_keyBest}N$tag', score);
       return score;
     }
   }

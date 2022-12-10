@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/data.dart';
 import 'package:game_1a2b/game_record.dart';
+import 'package:game_1a2b/guess.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/machine_guess_cubit.dart';
 import 'package:game_1a2b/keyboard/ab_keyboard.dart';
@@ -95,7 +96,7 @@ class _MachineGuessGame extends StatelessWidget {
             _listController.animateTo(_listController.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
-        if (state.question == 'stww') {
+        if (state is MachineGuessErrorState) {
           showDialog(
               barrierDismissible: false,
               context: context,
@@ -115,8 +116,7 @@ class _MachineGuessGame extends StatelessWidget {
                   ],
                 );
               }).then((value) => Navigator.of(context).pop());
-        } else if (state.guessRecord[state.guessRecord.length - 1].a ==
-            numLength) {
+        } else if (state is MachineGuessFinishState) {
           SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 1,
@@ -144,7 +144,7 @@ class _MachineGuessGame extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.guessRecord.isEmpty) {
+        if (state is MachineGuessInitState) {
           return Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(20),
@@ -153,10 +153,21 @@ class _MachineGuessGame extends StatelessWidget {
                 style: const TextStyle(fontSize: 25),
               ));
         } else {
+          List<GuessData> guessRecord = [];
+          if (state is MachineGuessGameState) {
+            MachineGuessGameState gameState = state;
+            guessRecord = gameState.guessRecord;
+          } else if (state is MachineGuessFinishState) {
+            MachineGuessFinishState finishState = state;
+            guessRecord = finishState.guessRecord;
+          } else if (state is MachineGuessErrorState) {
+            MachineGuessErrorState errorState = state;
+            guessRecord = errorState.guessRecord;
+          }
           return ListView.builder(
               physics: const BouncingScrollPhysics(),
               controller: _listController,
-              itemCount: state.guessRecord.length,
+              itemCount: guessRecord.length,
               itemBuilder: (context, idx) {
                 return Card(
                   color: Colors.grey,
@@ -175,15 +186,15 @@ class _MachineGuessGame extends StatelessWidget {
                                 style: const TextStyle(
                                     fontStyle: FontStyle.italic)),
                             TextSpan(
-                                text: '${state.guessRecord[idx].guessNum} ',
+                                text: '${guessRecord[idx].guessNum} ',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                             TextSpan(
-                                text: '${state.guessRecord[idx].a}A',
+                                text: '${guessRecord[idx].a}A',
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 100, 205, 253))),
                             TextSpan(
-                                text: '${state.guessRecord[idx].b}B',
+                                text: '${guessRecord[idx].b}B',
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 253, 239, 113))),
                           ],

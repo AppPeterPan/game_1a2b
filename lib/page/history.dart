@@ -35,6 +35,7 @@ class HistoryPage extends StatelessWidget {
                 itemBuilder: (context, idx) {
                   IconData leading = Icons.circle;
                   String title = '';
+                  late Color color;
                   final String subtitle =
                       '${AppLocalizations.of(context)!.xNumbers(snap.data![idx].numLength.toString())} | ${AppLocalizations.of(context)!.times(snap.data![idx].times.toString())}';
                   final String timeString = snap.data![idx].dateTime.toString();
@@ -43,15 +44,25 @@ class HistoryPage extends StatelessWidget {
                   switch (snap.data![idx].gameMode) {
                     case 0:
                       leading = Icons.person;
+                      color = Colors.redAccent;
                       title = AppLocalizations.of(context)!.userGuessTitle;
                       break;
                     case 1:
                       leading = Icons.devices;
+                      color = Colors.blueAccent;
                       title = AppLocalizations.of(context)!.machineGuessTitle;
+                      break;
+                    case 2:
+                      leading = Icons.person;
+                      color = Colors.orangeAccent;
+                      title = 'User Guess Lower Luck';
                       break;
                   }
                   return ListTile(
-                    leading: Icon(leading),
+                    leading: Icon(
+                      leading,
+                      color: color,
+                    ),
                     title: Text(title),
                     subtitle: Text(subtitle),
                     trailing: Text(trailing),

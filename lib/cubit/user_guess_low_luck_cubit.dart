@@ -1,13 +1,13 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/guess.dart';
 
 part 'user_guess_low_luck_state.dart';
 
-class UserGuessLowLuckCubit extends Cubit<UserGuessLowLuckState> {
-  UserGuessLowLuckCubit({required this.numLength})
-      : super(UserGuessLowLuckState(
-            answer: '', answerList: [], guessRecord: [])) {
+class UserGuessLowerLuckCubit extends Cubit<UserGuessLowerLuckState> {
+  UserGuessLowerLuckCubit({required this.numLength})
+      : super(UserGuessLowerLuckInitState(answerList: const [])) {
     start();
   }
 
@@ -32,8 +32,7 @@ class UserGuessLowLuckCubit extends Cubit<UserGuessLowLuckState> {
         answerList.add(number);
       }
     }
-    emit(UserGuessLowLuckState(
-        answer: '', answerList: answerList, guessRecord: []));
+    emit(UserGuessLowerLuckInitState(answerList: answerList));
   }
 
   void guess(String num) {
@@ -43,31 +42,35 @@ class UserGuessLowLuckCubit extends Cubit<UserGuessLowLuckState> {
       5: LowLuckB(firstB: 2, secondB: 2, lessNum: 1, differentB: 3),
     };
 
-    final int times = state.guessRecord.length;
-    List<String> answerList = state.answerList;
-    String ansString = state.answer;
-    List<GuessData> guessRecord = state.guessRecord;
+    List<GuessData> guessRecord = [];
     int a = 0;
     int b = 0;
-    if (times <= 1) {
+    if (state is UserGuessLowerLuckInitState ||
+        state is UserGuessLowerLuckGameWithoutAnsState) {
+      List<String> answerList;
       final List<String> newAnswerList = [];
-      switch (times) {
-        case 0:
+      if (state is UserGuessLowerLuckInitState) {
+        UserGuessLowerLuckInitState initState =
+            state as UserGuessLowerLuckInitState;
+        answerList = initState.answerList;
+
+        b = numLengthB[numLength]!.firstB;
+      } else {
+        UserGuessLowerLuckGameWithoutAnsState gameWithoutAnsState =
+            state as UserGuessLowerLuckGameWithoutAnsState;
+        answerList = gameWithoutAnsState.answerList;
+        guessRecord = gameWithoutAnsState.guessRecord;
+        String firstNum = guessRecord.first.guessNum;
+        for (int i = 0; i < numLength; i++) {
+          firstNum = firstNum.replaceAll(num[i], '');
+        }
+        if (firstNum.length == numLength) {
+          b = numLengthB[numLength]!.differentB;
+        } else if (firstNum.length >= numLengthB[numLength]!.lessNum) {
+          b = numLengthB[numLength]!.secondB;
+        } else {
           b = numLengthB[numLength]!.firstB;
-          break;
-        case 1:
-          String firstNum = guessRecord[0].guessNum;
-          for (int i = 0; i < numLength; i++) {
-            firstNum = firstNum.replaceAll(num[i], '');
-          }
-          if (firstNum.length == numLength) {
-            b = numLengthB[numLength]!.differentB;
-          } else if (firstNum.length >= numLengthB[numLength]!.lessNum) {
-            b = numLengthB[numLength]!.secondB;
-          } else {
-            b = numLengthB[numLength]!.firstB;
-          }
-          break;
+        }
       }
       for (int i = 0; i < answerList.length; i++) {
         int ta = 0; //for test
@@ -88,10 +91,20 @@ class UserGuessLowLuckCubit extends Cubit<UserGuessLowLuckState> {
         }
       }
       answerList = newAnswerList;
-      if (times == 1) {
-        ansString = answerList[Random().nextInt(answerList.length)];
+      guessRecord.add(GuessData(guessNum: num, a: a, b: b));
+      if (state is UserGuessLowerLuckInitState) {
+        emit(UserGuessLowerLuckGameWithoutAnsState(
+            answerList: answerList, guessRecord: guessRecord));
+      } else {
+        emit(UserGuessLowerLuckGameWithAnsState(
+            answer: answerList[Random().nextInt(answerList.length)],
+            guessRecord: guessRecord));
       }
-    } else {
+    } else if (state is UserGuessLowerLuckGameWithAnsState) {
+      UserGuessLowerLuckGameWithAnsState gameWithAnsState =
+          state as UserGuessLowerLuckGameWithAnsState;
+      String ansString = gameWithAnsState.answer;
+      guessRecord = gameWithAnsState.guessRecord;
       for (int i1 = 0; i1 < numLength; i1++) {
         for (int i2 = 0; i2 < numLength; i2++) {
           if (num[i1] == ansString[i2]) {
@@ -103,10 +116,15 @@ class UserGuessLowLuckCubit extends Cubit<UserGuessLowLuckState> {
           }
         }
       }
+      guessRecord.add(GuessData(guessNum: num, a: a, b: b));
+      if (guessRecord.last.a == numLength) {
+        emit(UserGuessLowerLuckFinishState(
+            answer: ansString, guessRecord: guessRecord));
+      } else {
+        emit(UserGuessLowerLuckGameWithAnsState(
+            answer: ansString, guessRecord: guessRecord));
+      }
     }
-    guessRecord.add(GuessData(guessNum: num, a: a, b: b));
-    emit(UserGuessLowLuckState(
-        answer: ansString, answerList: answerList, guessRecord: guessRecord));
   }
 }
 

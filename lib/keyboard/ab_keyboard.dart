@@ -48,7 +48,14 @@ class _KeyboardInputContent extends StatelessWidget {
       builder: (mgContext, mgState) {
         return BlocBuilder<ABKeyboardCubit, ABKeyboardState>(
             builder: (context, state) {
-          final question = mgState.question;
+          String question = '';
+          if (mgState is MachineGuessInitState) {
+            MachineGuessInitState initState = mgState;
+            question = initState.question;
+          } else if (mgState is MachineGuessGameState) {
+            MachineGuessGameState gameState = mgState;
+            question = gameState.question;
+          }
           final a = state.a;
           final b = state.b;
           return Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/game_record.dart';
+import 'package:game_1a2b/guess.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';
 import 'package:game_1a2b/data.dart';
@@ -91,54 +92,63 @@ class _QuitBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        final String answer =
-            BlocProvider.of<UserGuessCubit>(context).state.answer;
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(AppLocalizations.of(context)!.quitTitle),
-                content: Text(AppLocalizations.of(context)!.quitContent),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                actions: [
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: Text(
-                        AppLocalizations.of(context)!.quitBtn,
-                        style: const TextStyle(color: Colors.red),
-                      )),
-                  TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: Text(AppLocalizations.of(context)!.cancelBtn))
-                ],
-              );
-            }).then((value) {
-          if (value) {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(AppLocalizations.of(context)!.youQuitTitle),
-                    content: Text(
-                        AppLocalizations.of(context)!.youQuitContent(answer)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                              AppLocalizations.of(context)!.closeAndRetryBtn))
-                    ],
-                  );
-                }).then((value) => Navigator.of(context).pop());
-          }
-        });
+    return BlocBuilder<UserGuessCubit, UserGuessState>(
+      builder: (context, state) {
+        if (state is UserGuessGameState && state.guessRecord.length >= 5) {
+          return FloatingActionButton(
+            onPressed: () {
+              final String answer = state.answer;
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.quitTitle),
+                      content: Text(AppLocalizations.of(context)!.quitContent),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: Text(
+                              AppLocalizations.of(context)!.quitBtn,
+                              style: const TextStyle(color: Colors.red),
+                            )),
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child:
+                                Text(AppLocalizations.of(context)!.cancelBtn))
+                      ],
+                    );
+                  }).then((value) {
+                if (value) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title:
+                              Text(AppLocalizations.of(context)!.youQuitTitle),
+                          content: Text(AppLocalizations.of(context)!
+                              .youQuitContent(answer)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(AppLocalizations.of(context)!
+                                    .closeAndRetryBtn))
+                          ],
+                        );
+                      }).then((value) => Navigator.of(context).pop());
+                }
+              });
+            },
+            tooltip: AppLocalizations.of(context)!.quitBtn,
+            child: const Icon(Icons.close),
+          );
+        } else {
+          return Container();
+        }
       },
-      tooltip: AppLocalizations.of(context)!.quitBtn,
-      child: const Icon(Icons.close),
     );
   }
 }
@@ -156,15 +166,14 @@ class _UserGuessGame extends StatelessWidget {
             _listController.animateTo(_listController.position.maxScrollExtent,
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutQuart));
-        if (state.guessRecord[state.guessRecord.length - 1].a == numLength) {
+        if (state is UserGuessFinishState) {
           SPUtil().addHistory(GameRecord(
               dateTime: DateTime.now(),
               gameMode: 0,
               times: state.guessRecord.length,
               numLength: numLength));
           SPUtil()
-              .setBestScore(
-                  numLength: numLength, score: state.guessRecord.length)
+              .setBestScore(tag: '$numLength', score: state.guessRecord.length)
               .then((bestRecord) {
             showDialog(
                 barrierDismissible: false,
@@ -202,7 +211,7 @@ class _UserGuessGame extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.guessRecord.isEmpty) {
+        if (state is UserGuessInitState) {
           return Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(20),
@@ -211,10 +220,18 @@ class _UserGuessGame extends StatelessWidget {
                 style: const TextStyle(fontSize: 25),
               ));
         } else {
+          List<GuessData> guessRecord = [];
+          if (state is UserGuessGameState) {
+            UserGuessGameState gameState = state;
+            guessRecord = gameState.guessRecord;
+          } else if (state is UserGuessFinishState) {
+            UserGuessFinishState finishState = state;
+            guessRecord = finishState.guessRecord;
+          }
           return ListView.builder(
               physics: const BouncingScrollPhysics(),
               controller: _listController,
-              itemCount: state.guessRecord.length,
+              itemCount: guessRecord.length,
               itemBuilder: (context, idx) {
                 return Card(
                   color: Colors.grey,
@@ -233,15 +250,15 @@ class _UserGuessGame extends StatelessWidget {
                                 style: const TextStyle(
                                     fontStyle: FontStyle.italic)),
                             TextSpan(
-                                text: '${state.guessRecord[idx].guessNum} ',
+                                text: '${guessRecord[idx].guessNum} ',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                             TextSpan(
-                                text: '${state.guessRecord[idx].a}A',
+                                text: '${guessRecord[idx].a}A',
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 100, 205, 253))),
                             TextSpan(
-                                text: '${state.guessRecord[idx].b}B',
+                                text: '${guessRecord[idx].b}B',
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 253, 239, 113))),
                           ],

@@ -22,6 +22,11 @@ class NumKeyboard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ));
+    final ButtonStyle textButtonDisableStyle = TextButton.styleFrom(
+        foregroundColor: Colors.red,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ));
     return BlocProvider(
       create: (context) => NumKeyboardCubit(numLength: numLength),
       child: Container(
@@ -37,12 +42,15 @@ class NumKeyboard extends StatelessWidget {
             for (int i = 0; i < 3; i++)
               _KeyboardNumRow(
                 textButtonStyle: textButtonStyle,
+                textButtonDisableStyle: textButtonDisableStyle,
                 startNum: i * 3 + 1,
               ),
             _KeyboardActionRow(
-                numLength: numLength,
-                numKeyboardGameType: numKeyboardGameType,
-                textButtonStyle: textButtonStyle)
+              numLength: numLength,
+              numKeyboardGameType: numKeyboardGameType,
+              textButtonStyle: textButtonStyle,
+              textButtonDisableStyle: textButtonDisableStyle,
+            )
           ],
         ),
       ),
@@ -120,7 +128,8 @@ class _KeyboardInputContent extends StatelessWidget {
                     BlocProvider.of<UserGuessCubit>(context).guess(num);
                     break;
                   case NumKeyboardGameType.userGuessLowLuck:
-                    BlocProvider.of<UserGuessLowLuckCubit>(context).guess(num);
+                    BlocProvider.of<UserGuessLowerLuckCubit>(context)
+                        .guess(num);
                     break;
                 }
               }
@@ -140,8 +149,11 @@ class _KeyboardInputContent extends StatelessWidget {
 
 class _KeyboardNumRow extends StatelessWidget {
   const _KeyboardNumRow(
-      {required this.textButtonStyle, required this.startNum});
+      {required this.textButtonStyle,
+      required this.textButtonDisableStyle,
+      required this.startNum});
   final ButtonStyle textButtonStyle;
+  final ButtonStyle textButtonDisableStyle;
   final int startNum;
   @override
   Widget build(BuildContext context) {
@@ -152,12 +164,22 @@ class _KeyboardNumRow extends StatelessWidget {
           SizedBox(
               width: 75,
               height: 60,
-              child: TextButton(
-                  onPressed: () {
-                    BlocProvider.of<NumKeyboardCubit>(context).input(i);
-                  },
-                  style: textButtonStyle,
-                  child: Text('$i', style: const TextStyle(fontSize: 25))))
+              child: BlocBuilder<NumKeyboardCubit, NumKeyboardState>(
+                builder: (context, state) {
+                  return TextButton(
+                      onPressed: () {
+                        BlocProvider.of<NumKeyboardCubit>(context).input(i);
+                      },
+                      onLongPress: () {
+                        BlocProvider.of<NumKeyboardCubit>(context)
+                            .toggleDisabledNum(i);
+                      },
+                      style: state.disabledNum.contains(i)
+                          ? textButtonDisableStyle
+                          : textButtonStyle,
+                      child: Text('$i', style: const TextStyle(fontSize: 25)));
+                },
+              ))
       ],
     );
   }
@@ -167,10 +189,12 @@ class _KeyboardActionRow extends StatelessWidget {
   const _KeyboardActionRow(
       {required this.numLength,
       required this.numKeyboardGameType,
-      required this.textButtonStyle});
+      required this.textButtonStyle,
+      required this.textButtonDisableStyle});
   final int numLength;
   final NumKeyboardGameType numKeyboardGameType;
   final ButtonStyle textButtonStyle;
+  final ButtonStyle textButtonDisableStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +220,7 @@ class _KeyboardActionRow extends StatelessWidget {
                       BlocProvider.of<UserGuessCubit>(context).guess(num);
                       break;
                     case NumKeyboardGameType.userGuessLowLuck:
-                      BlocProvider.of<UserGuessLowLuckCubit>(context)
+                      BlocProvider.of<UserGuessLowerLuckCubit>(context)
                           .guess(num);
                       break;
                   }
@@ -206,15 +230,22 @@ class _KeyboardActionRow extends StatelessWidget {
         SizedBox(
             width: 75,
             height: 60,
-            child: TextButton(
-                onPressed: () {
-                  BlocProvider.of<NumKeyboardCubit>(context).input(0);
-                },
-                style: textButtonStyle,
-                child: const Text(
-                  '0',
-                  style: TextStyle(fontSize: 25),
-                ))),
+            child: BlocBuilder<NumKeyboardCubit, NumKeyboardState>(
+              builder: (context, state) {
+                return TextButton(
+                    onPressed: () {
+                      BlocProvider.of<NumKeyboardCubit>(context).input(0);
+                    },
+                    onLongPress: () {
+                      BlocProvider.of<NumKeyboardCubit>(context)
+                          .toggleDisabledNum(0);
+                    },
+                    style: state.disabledNum.contains(0)
+                        ? textButtonDisableStyle
+                        : textButtonStyle,
+                    child: const Text('0', style: TextStyle(fontSize: 25)));
+              },
+            )),
         SizedBox(
             width: 75,
             height: 60,

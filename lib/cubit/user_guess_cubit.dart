@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/guess.dart';
 
@@ -6,8 +7,8 @@ part 'user_guess_state.dart';
 
 class UserGuessCubit extends Cubit<UserGuessState> {
   UserGuessCubit({required this.numLength})
-      : super(UserGuessState(
-            answer: '1234567890'.substring(0, numLength), guessRecord: [])) {
+      : super(
+            UserGuessInitState(answer: '1234567890'.substring(0, numLength))) {
     start();
   }
 
@@ -22,12 +23,22 @@ class UserGuessCubit extends Cubit<UserGuessState> {
       numList.removeAt(ranNum);
     }
 
-    emit(UserGuessState(answer: ansString, guessRecord: []));
+    emit(UserGuessInitState(answer: ansString));
   }
 
   void guess(String num) {
-    final String ansString = state.answer;
-    List<GuessData> guessRecord = state.guessRecord;
+    String ansString;
+    List<GuessData> guessRecord = [];
+    if (state is UserGuessInitState) {
+      UserGuessInitState initState = state as UserGuessInitState;
+      ansString = initState.answer;
+    } else if (state is UserGuessGameState) {
+      UserGuessGameState gameState = state as UserGuessGameState;
+      ansString = gameState.answer;
+      guessRecord = gameState.guessRecord;
+    } else {
+      return;
+    }
     int a = 0;
     int b = 0;
     for (int i1 = 0; i1 < numLength; i1++) {
@@ -42,6 +53,10 @@ class UserGuessCubit extends Cubit<UserGuessState> {
       }
     }
     guessRecord.add(GuessData(guessNum: num, a: a, b: b));
-    emit(UserGuessState(answer: ansString, guessRecord: guessRecord));
+    if (guessRecord.last.a == numLength) {
+      emit(UserGuessFinishState(answer: ansString, guessRecord: guessRecord));
+    } else {
+      emit(UserGuessGameState(answer: ansString, guessRecord: guessRecord));
+    }
   }
 }

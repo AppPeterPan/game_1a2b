@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/guess.dart';
 
@@ -6,10 +8,10 @@ part 'machine_guess_state.dart';
 
 class MachineGuessCubit extends Cubit<MachineGuessState> {
   MachineGuessCubit({required this.numLength})
-      : super(MachineGuessState(
-            question: '1234567890'.substring(0, numLength),
-            guessRecord: [],
-            numberList: [])) {
+      : super(MachineGuessInitState(
+          question: '1234567890'.substring(0, numLength),
+          numberList: const [],
+        )) {
     start();
   }
 
@@ -34,16 +36,27 @@ class MachineGuessCubit extends Cubit<MachineGuessState> {
         numberList.add(number);
       }
     }
-    final String question = numberList[Random().nextInt(numberList.length)];
-
-    emit(MachineGuessState(
-        question: question, guessRecord: [], numberList: numberList));
+    emit(MachineGuessInitState(
+        question: numberList[Random().nextInt(numberList.length)],
+        numberList: numberList));
   }
 
   void answer(int a, int b) {
-    final String question = state.question;
-    final List<String> numberList = state.numberList;
-    List<GuessData> guessRecord = state.guessRecord;
+    String question;
+    List<String> numberList;
+    List<GuessData> guessRecord = [];
+    if (state is MachineGuessInitState) {
+      MachineGuessInitState initState = state as MachineGuessInitState;
+      question = initState.question;
+      numberList = initState.numberList;
+    } else if (state is MachineGuessGameState) {
+      MachineGuessGameState gameState = state as MachineGuessGameState;
+      question = gameState.question;
+      numberList = gameState.numberList;
+      guessRecord = gameState.guessRecord;
+    } else {
+      return;
+    }
     final List<String> newNumList = [];
     for (int i = 0; i < numberList.length; i++) {
       int ta = 0; //for test
@@ -64,12 +77,15 @@ class MachineGuessCubit extends Cubit<MachineGuessState> {
       }
     }
     guessRecord.add(GuessData(guessNum: question, a: a, b: b));
-    final String newQuestion = newNumList.isNotEmpty
-        ? newNumList[Random().nextInt(newNumList.length)]
-        : 'stww';
-    emit(MachineGuessState(
-        question: newQuestion,
-        guessRecord: guessRecord,
-        numberList: newNumList));
+    if (newNumList.isEmpty) {
+      emit(MachineGuessErrorState(guessRecord: guessRecord));
+    } else if (guessRecord.last.a == numLength) {
+      emit(MachineGuessFinishState(guessRecord: guessRecord));
+    } else {
+      emit(MachineGuessGameState(
+          question: newNumList[Random().nextInt(newNumList.length)],
+          guessRecord: guessRecord,
+          numberList: newNumList));
+    }
   }
 }

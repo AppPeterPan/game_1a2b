@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
         onSelected: (val) {
           switch (val) {
             case HomePagePopupItem.bestRecord:
-              SPUtil().getBsetScores(numLengthList: [3, 4, 5]).then(
+              SPUtil().getBsetScores(tagList: ['3', '4', '5']).then(
                 (bestRecords) {
                   showDialog(
                       context: context,
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                         );
                       }).then((value) {
                     if (value == true) {
-                      SPUtil().resetBestScore(numLengthList: [3, 4, 5]);
+                      SPUtil().resetBestScore(tagList: ['3', '4', '5']);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                             AppLocalizations.of(context)!.bestRecordCleared),
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                           onPressed: () {
                             for (int i = 0; i < bestRecords.length; i++) {
                               SPUtil().setBestScore(
-                                  numLength: bestRecords[i]['nl']!,
+                                  tag: bestRecords[i]['nl']!,
                                   score: bestRecords[i]['br']!);
                             }
                           },
@@ -137,21 +137,21 @@ class HomePage extends StatelessWidget {
           MenuDataAction(
             title: AppLocalizations.of(context)!.xNumbers('3'),
             action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const UserGuessLowLuckPage(
+                builder: (_) => const UserGuessLowerLuckPage(
                       numLength: 3,
                     ))),
           ),
           MenuDataAction(
             title: AppLocalizations.of(context)!.xNumbers('4'),
             action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const UserGuessLowLuckPage(
+                builder: (_) => const UserGuessLowerLuckPage(
                       numLength: 4,
                     ))),
           ),
           MenuDataAction(
             title: AppLocalizations.of(context)!.xNumbers('5'),
             action: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const UserGuessLowLuckPage(
+                builder: (_) => const UserGuessLowerLuckPage(
                       numLength: 5,
                     ))),
           )
