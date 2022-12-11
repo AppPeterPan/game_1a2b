@@ -20,10 +20,19 @@ class SPUtil {
     }
   }
 
+  Future<int?> getBsetScore({required String tag}) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    if (tag == '4') {
+      await updateNewVersion();
+    }
+
+    return sp.getInt('${_keyBest}N$tag');
+  }
+
   Future<List<Map<String, dynamic>>> getBsetScores(
       {required List<String> tagList}) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
-    if (tagList.contains(4)) {
+    if (tagList.contains('4')) {
       await updateNewVersion();
     }
     List<Map<String, dynamic>> datas = [];

@@ -7,6 +7,10 @@
     "@machineGuessTitle": {
         "description": ""
     },
+    "userGuessLowerLuckTitle": "User Guess (HardMode)",
+    "@userGuessLowerLuckTitle": {
+        "description": ""
+    },
     "gameRecordTitle": "History Record",
     "@gameRecordTitle": {
         "description": ""
@@ -23,42 +27,12 @@
     "@gameRecordSubtitle": {
         "description": ""
     },
-    "bestRecordTitle": "Best Record",
-    "@bestRecordTitle": {
-        "description": ""
-    },
     "licenseTitle": "License",
     "@licenseTitle": {
         "description": ""
     },
-    "bestRecordWithContent": "Your best record is: {bestRecord}.",
-    "@bestRecordWithContent": {
-        "description": "",
-        "placeholders": {
-            "bestRecord": {
-                "type": "String",
-                "example": "999"
-            }
-        }
-    },
-    "bestRecordWithoutContent": "No best record yet!",
-    "@bestRecordWithoutContent": {
-        "description": ""
-    },
-    "closeBtn": "Close",
-    "@closeBtn": {
-        "description": ""
-    },
     "resetBtn": "Reset",
     "@resetBtn": {
-        "description": ""
-    },
-    "bestRecordCleared": "Best record cleared!",
-    "@bestRecordCleared": {
-        "description": ""
-    },
-    "undoBtn": "Undo",
-    "@undoBtn": {
         "description": ""
     },
     "exitTitle": "Exit",
@@ -240,5 +214,21 @@
                 "example": "4"
             }
         }
+    },
+    "websiteTitle": "Website",
+    "@websiteTitle": {
+        "description": ""
+    },
+    "itemDisabled": "Play the base mode game above to unlock it!",
+    "@itemDisabled": {
+        "description": ""
+    },
+    "resetBestRecordTitle": "Delete best records",
+    "@resetBestRecordTitle": {
+        "description": ""
+    },
+    "resetBestRecordContent": "Once deleted, it cannot be recovered!",
+    "@resetBestRecordContent": {
+        "description": ""
     }
 }

@@ -1,18 +1,13 @@
 {
   "userGuessTitle": "ユーザー推測",
   "machineGuessTitle": "ロボット推測",
+  "userGuessLowerLuckTitle": "ユーザー推測 s（ハードモード）",
   "gameRecordTitle": "前の記録",
   "userGuessSubtitle": "このゲームモードでは、機械が選んだ数字を当てる必要があります。",
   "machineGuessSubtitle": "このゲームモードでは、一連の数字を答えとして取り、マシンが尋ねる質問に答える必要があり、マシンはそれを正しく推測できます。",
   "gameRecordSubtitle": "このページには、ゲームをプレイするたびに試行した推測の数が記録され、このデータを表示または削除できます。",
-  "bestRecordTitle": "最高記録",
   "licenseTitle": "ライセンス",
-  "bestRecordWithContent": "あなたの最高記録は次のとおりです: {bestRecord}。",
-  "bestRecordWithoutContent": "最高記録はまだない！",
-  "closeBtn": "クロージャー",
   "resetBtn": "リセット",
-  "bestRecordCleared": "ベストレコード削除！",
-  "undoBtn": "回復します",
   "exitTitle": "終了する",
   "exitContent": "ページを終了するとゲームが終了します。終了してもよろしいですか?",
   "exitBtn": "終了する",
@@ -42,5 +37,9 @@
   "deleteBtn": "消去",
   "cancelBtn": "キャンセル",
   "noGameRecord": "まだ記録がありません。まずはゲームを始めましょう。",
-  "xNumbers": "{num}ケタ"
+  "xNumbers": "{num}ケタ",
+  "websiteTitle": "ウェブサイト",
+  "itemDisabled": "上記の基本モードのゲームをプレイしてロックを解除してください!",
+  "resetBestRecordTitle": "最高記録を削除",
+  "resetBestRecordContent": "一度削除すると元に戻せません！"
 }

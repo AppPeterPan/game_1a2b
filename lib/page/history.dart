@@ -55,7 +55,8 @@ class HistoryPage extends StatelessWidget {
                     case 2:
                       leading = Icons.person;
                       color = Colors.orangeAccent;
-                      title = 'User Guess Lower Luck';
+                      title =
+                          AppLocalizations.of(context)!.userGuessLowerLuckTitle;
                       break;
                   }
                   return ListTile(

@@ -1,4 +1,4 @@
-part of 'user_guess_low_luck_cubit.dart';
+part of 'user_guess_lower_luck_cubit.dart';
 
 @immutable
 abstract class UserGuessLowerLuckState {}

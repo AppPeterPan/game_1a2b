@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_1a2b/cubit/user_guess_low_luck_cubit.dart';
+import 'package:game_1a2b/cubit/user_guess_lower_luck_cubit.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/cubit/num_keyboard_cubit.dart';
 import 'package:game_1a2b/cubit/user_guess_cubit.dart';

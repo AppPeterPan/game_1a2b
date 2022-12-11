@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_1a2b/cubit/user_guess_low_luck_cubit.dart';
+import 'package:game_1a2b/cubit/user_guess_lower_luck_cubit.dart';
 import 'package:game_1a2b/game_record.dart';
 import 'package:game_1a2b/guess.dart';
 import 'package:game_1a2b/l10n.dart';
@@ -51,7 +51,8 @@ class UserGuessLowerLuckPage extends StatelessWidget {
         child: Scaffold(
             backgroundColor: const Color(0xFFE5EAEA),
             appBar: AppBar(
-              title: Text('User Guess Lower Luck'),
+              title:
+                  Text(AppLocalizations.of(context)!.userGuessLowerLuckTitle),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             floatingActionButton: const _QuitBtn(),
@@ -178,7 +179,7 @@ class _UserGuessGame extends StatelessWidget {
               numLength: numLength));
           SPUtil()
               .setBestScore(
-                  tag: '${numLength}l', score: state.guessRecord.length)
+                  tag: '${numLength}HM', score: state.guessRecord.length)
               .then((bestRecord) {
             showDialog(
                 barrierDismissible: false,

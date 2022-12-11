@@ -1,18 +1,13 @@
 {
     "userGuessTitle": "人猜機器",
     "machineGuessTitle": "機器猜人",
+    "userGuessLowerLuckTitle": "人猜機器 (困難模式)",
     "gameRecordTitle": "歷史記錄",
     "userGuessSubtitle": "在這個遊戲模式中，你要猜出機器選出的數字。",
     "machineGuessSubtitle": "在這個遊戲模式中，你要將一組數字作為答案並回答機器詢問的問題，機器就能成功猜出。",
     "gameRecordSubtitle": "這裡記錄著你每次玩遊戲猜測的次數，你可以查看或刪除這些資料。",
-    "bestRecordTitle": "最佳紀錄",
     "licenseTitle": "授權",
-    "bestRecordWithContent": "你的最佳紀錄是: {bestRecord}。",
-    "bestRecordWithoutContent": "尚無最佳紀錄!",
-    "closeBtn": "關閉",
     "resetBtn": "重設",
-    "bestRecordCleared": "已清除最佳紀錄!",
-    "undoBtn": "還原",
     "exitTitle": "退出",
     "exitContent": "退出將結束遊戲，您確定要退出嗎?",
     "exitBtn": "退出",
@@ -42,5 +37,9 @@
     "deleteBtn": "刪除",
     "cancelBtn": "取消",
     "noGameRecord": "尚無記錄，快開始遊戲吧!",
-    "xNumbers": "{num}位數字"
+    "xNumbers": "{num}位數字",
+    "websiteTitle": "查看網站",
+    "itemDisabled": "玩上方基本模式遊戲來解鎖！",
+    "resetBestRecordTitle": "刪除最佳紀錄",
+    "resetBestRecordContent": "刪除後將無法復原!"
 }

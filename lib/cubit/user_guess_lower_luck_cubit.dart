@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/guess.dart';
 
-part 'user_guess_low_luck_state.dart';
+part 'user_guess_lower_luck_state.dart';
 
 class UserGuessLowerLuckCubit extends Cubit<UserGuessLowerLuckState> {
   UserGuessLowerLuckCubit({required this.numLength})
