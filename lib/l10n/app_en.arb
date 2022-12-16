@@ -185,7 +185,7 @@
             }
         }
     },
-    "deleteAllRecordTitle": "Delete all records",
+    "deleteAllRecordTitle": "Delete All Records",
     "@deleteAllRecordTitle": {
         "description": ""
     },
@@ -223,7 +223,7 @@
     "@itemDisabled": {
         "description": ""
     },
-    "resetBestRecordTitle": "Delete best records",
+    "resetBestRecordTitle": "Delete Best Records",
     "@resetBestRecordTitle": {
         "description": ""
     },

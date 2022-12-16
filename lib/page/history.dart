@@ -9,6 +9,7 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> appBarActions = [const _DeleteRecordBtn()];
+    final ScrollController _listController = ScrollController();
 
     return Scaffold(
       backgroundColor: const Color(0xFFE5EAEA),
@@ -30,6 +31,7 @@ class HistoryPage extends StatelessWidget {
                   ));
             } else {
               return ListView.builder(
+                controller: _listController,
                 physics: const BouncingScrollPhysics(),
                 itemCount: snap.data!.length,
                 itemBuilder: (context, idx) {
@@ -76,6 +78,23 @@ class HistoryPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+        },
+      ),
+      floatingActionButton: FutureBuilder<List<GameRecord>>(
+        future: SPUtil().getHistory(),
+        builder: (context, snap) {
+          if (snap.hasData) {
+            if (snap.data!.isNotEmpty) {
+              return FloatingActionButton(
+                onPressed: () => _listController.animateTo(
+                    _listController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOutQuart),
+                child: const Icon(Icons.arrow_downward),
+              );
+            }
+          }
+          return Container();
         },
       ),
     );

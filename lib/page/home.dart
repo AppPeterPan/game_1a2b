@@ -6,9 +6,7 @@ import 'package:game_1a2b/page/history.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
 import 'package:game_1a2b/page/user_guess_lower_luck.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
-enum HomePagePopupItem { bestRecord, license }
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -132,13 +130,6 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      MenuData(
-        title: AppLocalizations.of(context)!.gameRecordTitle,
-        subtitle: AppLocalizations.of(context)!.gameRecordSubtitle,
-        icon: Icons.history,
-        action: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const HistoryPage())),
-      ),
     ];
 
     return Scaffold(
@@ -161,12 +152,23 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.history),
+              title: Text(AppLocalizations.of(context)!.gameRecordTitle),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const HistoryPage()));
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.open_in_new),
               title: Text(AppLocalizations.of(context)!.websiteTitle),
               onTap: () {
                 Navigator.of(context).pop();
-                launchUrlString(
-                    'https://sites.google.com/view/ycyprogram/1a2b');
+                launchUrl(
+                  Uri.https('sites.google.com', '/view/ycyprogram/1a2b'),
+                  mode: LaunchMode.externalApplication,
+                );
               },
             ),
             ListTile(
@@ -192,96 +194,97 @@ class _HomePageState extends State<HomePage> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 7.5),
               child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: menuData.action,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Icon(
-                                      menuData.icon,
-                                      size: 60,
-                                      color: Colors.blue,
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Expanded(
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                          Text(
-                                            menuData.title,
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.grey.shade900,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            menuData.subtitle,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.grey.shade700,
-                                            ),
-                                          ),
-                                        ]))
-                                  ]),
-                            ),
-                          ),
-                          if (menuData.multiAction is List<MenuDataAction>)
-                            for (int i = 0;
-                                i < menuData.multiAction!.length * 2;
-                                i++)
-                              Builder(
-                                builder: (context) {
-                                  if (i.isEven) {
-                                    return const Divider(
-                                      thickness: 2,
-                                    );
-                                  } else {
-                                    final int idx2 = ((i - 1) / 2).round();
-                                    final actionData =
-                                        menuData.multiAction![idx2];
-                                    if (actionData.disabledCheckTag == null) {
-                                      return MenuAction(
-                                        disabled: actionData.disabled,
-                                        title: actionData.title,
-                                        tag: actionData.tag,
-                                        action: actionData.action,
-                                      );
-                                    } else {
-                                      return FutureBuilder(
-                                          future: SPUtil().getBsetScore(
-                                              tag: actionData.disabledCheckTag
-                                                  as String),
-                                          builder: (context, snap) {
-                                            return MenuAction(
-                                              disabled: !snap.hasData,
-                                              title: actionData.title,
-                                              tag: actionData.tag,
-                                              action: actionData.action,
-                                            );
-                                          });
-                                    }
-                                  }
-                                },
-                              )
-                        ],
-                      ))),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: menuData.action,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Icon(
+                                  menuData.icon,
+                                  size: 60,
+                                  color: Colors.blue,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Expanded(
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                      Text(
+                                        menuData.title,
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          color: Colors.grey.shade900,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        menuData.subtitle,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                    ]))
+                              ]),
+                        ),
+                      ),
+                      if (menuData.multiAction is List<MenuDataAction>)
+                        for (int i = 0;
+                            i < menuData.multiAction!.length * 2;
+                            i++)
+                          Builder(
+                            builder: (context) {
+                              if (i.isEven) {
+                                return const Divider(
+                                  thickness: 2,
+                                );
+                              } else {
+                                final int idx2 = ((i - 1) / 2).round();
+                                final actionData = menuData.multiAction![idx2];
+                                if (actionData.disabledCheckTag == null) {
+                                  return MenuAction(
+                                    disabled: actionData.disabled,
+                                    title: actionData.title,
+                                    tag: actionData.tag,
+                                    action: actionData.action,
+                                  );
+                                } else {
+                                  return FutureBuilder(
+                                      future: SPUtil().getBsetScore(
+                                          tag: actionData.disabledCheckTag
+                                              as String),
+                                      builder: (context, snap) {
+                                        return MenuAction(
+                                          disabled: !snap.hasData,
+                                          title: actionData.title,
+                                          tag: actionData.tag,
+                                          action: actionData.action,
+                                        );
+                                      });
+                                }
+                              }
+                            },
+                          )
+                    ],
+                  ),
+                ),
+              ),
             );
           }),
     );
