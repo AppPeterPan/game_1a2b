@@ -68,188 +68,182 @@ class HomePage extends StatelessWidget {
       )),
       body: Column(
         children: <Widget>[
-          Expanded(
-            child: HomeItem(
-              icon: Icons.person,
-              title: AppLocalizations.of(context)!.userGuessTitle,
-              subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(15.0),
-                      ),
+          HomeItem(
+            icon: Icons.person,
+            title: AppLocalizations.of(context)!.userGuessTitle,
+            subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(15.0),
                     ),
-                    builder: (context) => HomeItemMenu(children: [
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('3'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const UserGuessPage(
-                                  numLength: 3,
-                                ),
+                  ),
+                  builder: (context) => HomeItemMenu(children: [
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('3'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const UserGuessPage(
+                                numLength: 3,
                               ),
                             ),
-                            tag: '3',
                           ),
-                          const Divider(),
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('4'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const UserGuessPage(
-                                  numLength: 4,
-                                ),
+                          tag: '3',
+                        ),
+                        const Divider(),
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('4'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const UserGuessPage(
+                                numLength: 4,
                               ),
                             ),
-                            tag: '4',
                           ),
-                          const Divider(),
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('5'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const UserGuessPage(
-                                  numLength: 5,
-                                ),
+                          tag: '4',
+                        ),
+                        const Divider(),
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('5'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const UserGuessPage(
+                                numLength: 5,
                               ),
                             ),
-                            tag: '5',
                           ),
-                        ]));
-              },
-            ),
+                          tag: '5',
+                        ),
+                      ]));
+            },
           ),
-          Expanded(
-            child: HomeItem(
-              icon: Icons.person,
-              title: AppLocalizations.of(context)!.userGuessLowerLuckTitle,
-              subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(15.0),
-                      ),
+          HomeItem(
+            icon: Icons.person,
+            title: AppLocalizations.of(context)!.userGuessLowerLuckTitle,
+            subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(15.0),
                     ),
-                    builder: (context) => HomeItemMenu(children: [
-                          FutureBuilder(
-                              future: SPUtil().getBsetScore(tag: '3'),
-                              builder: (context, snap) {
-                                return MenuAction(
-                                  disabled: !snap.hasData,
-                                  title: AppLocalizations.of(context)!
-                                      .xNumbers('3'),
-                                  action: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          const UserGuessLowerLuckPage(
-                                        numLength: 3,
-                                      ),
+                  ),
+                  builder: (context) => HomeItemMenu(children: [
+                        FutureBuilder(
+                            future: SPUtil().getBsetScore(tag: '3'),
+                            builder: (context, snap) {
+                              return MenuAction(
+                                disabled: !snap.hasData,
+                                title:
+                                    AppLocalizations.of(context)!.xNumbers('3'),
+                                action: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const UserGuessLowerLuckPage(
+                                      numLength: 3,
                                     ),
                                   ),
-                                  tag: '3HM',
-                                );
-                              }),
-                          const Divider(),
-                          FutureBuilder(
-                              future: SPUtil().getBsetScore(tag: '4'),
-                              builder: (context, snap) {
-                                return MenuAction(
-                                  disabled: !snap.hasData,
-                                  title: AppLocalizations.of(context)!
-                                      .xNumbers('4'),
-                                  action: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          const UserGuessLowerLuckPage(
-                                        numLength: 4,
-                                      ),
+                                ),
+                                tag: '3HM',
+                              );
+                            }),
+                        const Divider(),
+                        FutureBuilder(
+                            future: SPUtil().getBsetScore(tag: '4'),
+                            builder: (context, snap) {
+                              return MenuAction(
+                                disabled: !snap.hasData,
+                                title:
+                                    AppLocalizations.of(context)!.xNumbers('4'),
+                                action: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const UserGuessLowerLuckPage(
+                                      numLength: 4,
                                     ),
                                   ),
-                                  tag: '4HM',
-                                );
-                              }),
-                          const Divider(),
-                          FutureBuilder(
-                              future: SPUtil().getBsetScore(tag: '5'),
-                              builder: (context, snap) {
-                                return MenuAction(
-                                  disabled: !snap.hasData,
-                                  title: AppLocalizations.of(context)!
-                                      .xNumbers('5'),
-                                  action: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                          const UserGuessLowerLuckPage(
-                                        numLength: 5,
-                                      ),
+                                ),
+                                tag: '4HM',
+                              );
+                            }),
+                        const Divider(),
+                        FutureBuilder(
+                            future: SPUtil().getBsetScore(tag: '5'),
+                            builder: (context, snap) {
+                              return MenuAction(
+                                disabled: !snap.hasData,
+                                title:
+                                    AppLocalizations.of(context)!.xNumbers('5'),
+                                action: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const UserGuessLowerLuckPage(
+                                      numLength: 5,
                                     ),
                                   ),
-                                  tag: '5HM',
-                                );
-                              }),
-                        ]));
-              },
-            ),
+                                ),
+                                tag: '5HM',
+                              );
+                            }),
+                      ]));
+            },
           ),
-          Expanded(
-            child: HomeItem(
-              icon: Icons.devices,
-              title: AppLocalizations.of(context)!.machineGuessTitle,
-              subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(15.0),
-                      ),
+          HomeItem(
+            icon: Icons.devices,
+            title: AppLocalizations.of(context)!.machineGuessTitle,
+            subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(15.0),
                     ),
-                    builder: (context) => HomeItemMenu(children: [
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('3'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const MachineGuessPage(
-                                  numLength: 3,
-                                ),
+                  ),
+                  builder: (context) => HomeItemMenu(children: [
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('3'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MachineGuessPage(
+                                numLength: 3,
                               ),
                             ),
                           ),
-                          const Divider(),
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('4'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const MachineGuessPage(
-                                  numLength: 4,
-                                ),
+                        ),
+                        const Divider(),
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('4'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MachineGuessPage(
+                                numLength: 4,
                               ),
                             ),
                           ),
-                          const Divider(),
-                          MenuAction(
-                            disabled: false,
-                            title: AppLocalizations.of(context)!.xNumbers('5'),
-                            action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const MachineGuessPage(
-                                  numLength: 5,
-                                ),
+                        ),
+                        const Divider(),
+                        MenuAction(
+                          disabled: false,
+                          title: AppLocalizations.of(context)!.xNumbers('5'),
+                          action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const MachineGuessPage(
+                                numLength: 5,
                               ),
                             ),
                           ),
-                        ]));
-              },
-            ),
+                        ),
+                      ]));
+            },
           ),
         ],
       ),
