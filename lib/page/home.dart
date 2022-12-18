@@ -1,4 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/data.dart';
@@ -6,7 +7,8 @@ import 'package:game_1a2b/page/history.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
 import 'package:game_1a2b/page/user_guess_lower_luck.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:rating_dialog/rating_dialog.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -42,12 +44,20 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.rate_review),
+              title: Text('Rate'),
+              onTap: () {
+                Navigator.of(context).pop();
+                rate(context);
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.open_in_new),
               title: Text(AppLocalizations.of(context)!.websiteTitle),
               onTap: () {
                 Navigator.of(context).pop();
-                launchUrl(
-                  Uri.https('sites.google.com', '/view/ycyprogram/1a2b'),
+                launchUrlString(
+                  'https://sites.google.com/view/ycyprogram/1a2b',
                   mode: LaunchMode.externalApplication,
                 );
               },
@@ -282,6 +292,40 @@ class HomePage extends StatelessWidget {
         SPUtil().resetBestScore(tagList: ['3', '4', '5', '3HM', '4HM', '5HM']);
       }
     });
+  }
+
+  void rate(BuildContext context) {
+    if (kIsWeb) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => RatingDialog(
+          initialRating: 0,
+          title: const Text(
+            'Rating Dialog',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          message: const Text(
+            'Tap a star to set your rating. Add more description here if you want.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 15),
+          ),
+          image: const FlutterLogo(),
+          submitButtonText: 'Submit',
+          commentHint: 'Set your custom comment hint',
+          onSubmitted: (response) {},
+        ),
+      );
+    } else {
+      launchUrlString(
+        'https://play.google.com/store/apps/details?id=com.gmail.app97204.numbergame',
+        mode: LaunchMode.externalApplication,
+      );
+    }
   }
 }
 
