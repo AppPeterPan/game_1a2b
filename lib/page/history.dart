@@ -35,15 +35,16 @@ class HistoryPage extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: snap.data!.length,
                 itemBuilder: (context, idx) {
+                  List<GameRecord> data = snap.data!.reversed.toList();
                   IconData leading = Icons.circle;
                   String title = '';
                   late Color color;
                   final String subtitle =
-                      '${AppLocalizations.of(context)!.xNumbers(snap.data![idx].numLength.toString())} | ${AppLocalizations.of(context)!.times(snap.data![idx].times.toString())}';
-                  final String timeString = snap.data![idx].dateTime.toString();
+                      '${AppLocalizations.of(context)!.xNumbers(data[idx].numLength.toString())} | ${AppLocalizations.of(context)!.times(data[idx].times.toString())}';
+                  final String timeString = data[idx].dateTime.toString();
                   final String trailing =
                       timeString.substring(0, timeString.indexOf('.'));
-                  switch (snap.data![idx].gameMode) {
+                  switch (data[idx].gameMode) {
                     case 0:
                       leading = Icons.person;
                       color = Colors.redAccent;
@@ -78,23 +79,6 @@ class HistoryPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-        },
-      ),
-      floatingActionButton: FutureBuilder<List<GameRecord>>(
-        future: SPUtil().getHistory(),
-        builder: (context, snap) {
-          if (snap.hasData) {
-            if (snap.data!.isNotEmpty) {
-              return FloatingActionButton(
-                onPressed: () => _listController.animateTo(
-                    _listController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOutQuart),
-                child: const Icon(Icons.arrow_downward),
-              );
-            }
-          }
-          return Container();
         },
       ),
     );
