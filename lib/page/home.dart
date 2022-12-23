@@ -9,6 +9,7 @@ import 'package:game_1a2b/page/user_guess.dart';
 import 'package:game_1a2b/page/user_guess_lower_luck.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -314,10 +315,24 @@ class HomePage extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15),
           ),
-          image: const FlutterLogo(),
+          image: const Icon(
+            Icons.rate_review,
+            color: Colors.blue,
+            size: 150,
+          ),
           submitButtonText: 'Submit',
           commentHint: 'Set your custom comment hint',
-          onSubmitted: (response) {},
+          onSubmitted: (response) async {
+            await http.get(Uri.https(
+                'docs.google.com',
+                '/forms/d/e/1FAIpQLScHznDs6xzF-1yM1T2kY-oNCfUOrMaU63xfzfFLVOxHiehJ5w/formResponse',
+                {
+                  'usp': 'pp_url',
+                  'entry.2074980730': 'com.gmail.app97204.numbergame',
+                  'entry.905102409': '${response.rating}',
+                  'entry.1257025373': response.comment,
+                }));
+          },
         ),
       );
     } else {
