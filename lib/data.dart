@@ -10,6 +10,17 @@ class SPUtil {
 
   final String _keyBest = 'best';
   final String _keyHistory = 'history';
+  final String _keyRated = 'rated';
+
+  Future<bool> checkRated() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    return sp.getBool(_keyRated) ?? false;
+  }
+
+  Future<void> rated() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    await sp.setBool(_keyRated, true);
+  }
 
   Future<void> updateNewVersion() async {
     SharedPreferences sp = await SharedPreferences.getInstance();

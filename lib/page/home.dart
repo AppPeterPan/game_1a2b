@@ -1,4 +1,5 @@
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:game_1a2b/l10n.dart';
 import 'package:game_1a2b/data.dart';
@@ -6,7 +7,9 @@ import 'package:game_1a2b/page/history.dart';
 import 'package:game_1a2b/page/machine_guess.dart';
 import 'package:game_1a2b/page/user_guess.dart';
 import 'package:game_1a2b/page/user_guess_lower_luck.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:game_1a2b/web_app_review.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,7 +17,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE5EAEA),
       appBar: AppBar(
         title: const Text('Game 1A2B'),
       ),
@@ -42,14 +44,25 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.open_in_new),
-              title: Text(AppLocalizations.of(context)!.websiteTitle),
+              leading: const Icon(Icons.rate_review),
+              title: Text(AppLocalizations.of(context)!.rateTitle),
               onTap: () {
                 Navigator.of(context).pop();
-                launchUrl(
-                  Uri.https('sites.google.com', '/view/ycyprogram/1a2b'),
-                  mode: LaunchMode.externalApplication,
-                );
+                rateByUser(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.open_in_new),
+              title: Text(AppLocalizations.of(context)!.websiteTitle),
+              onTap: () async {
+                Navigator.of(context).pop();
+                if (await canLaunchUrlString(
+                    'https://sites.google.com/view/ycyprogram/1a2b')) {
+                  launchUrlString(
+                    'https://sites.google.com/view/ycyprogram/1a2b',
+                    mode: LaunchMode.externalApplication,
+                  );
+                }
               },
             ),
             ListTile(
@@ -66,6 +79,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       )),
+<<<<<<< HEAD
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -249,6 +263,9 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+=======
+      body: const _Body(),
+>>>>>>> beta
     );
   }
 
@@ -278,6 +295,354 @@ class HomePage extends StatelessWidget {
         SPUtil().resetBestScore(tagList: ['3', '4', '5', '3HM', '4HM', '5HM']);
       }
     });
+  }
+
+  Future<void> rateByUser(BuildContext context) async {
+    if (kIsWeb) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => const WebInAppReview(),
+      );
+    } else {
+      if (await canLaunchUrlString(
+          'https://sites.google.com/view/ycyprogram/1a2b')) {
+        launchUrlString(
+          'https://play.google.com/store/apps/details?id=com.gmail.app97204.numbergame',
+          mode: LaunchMode.externalApplication,
+        );
+      }
+    }
+  }
+}
+
+Future<void> rateByApp(BuildContext context) async {
+  List historyRecord = await SPUtil().getHistory();
+  bool rated = await SPUtil().checkRated();
+  if ((historyRecord.length >= 5 && !rated) ||
+      historyRecord.length % 100 == 0) {
+    if (kIsWeb) {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => const WebInAppReview(),
+      ).then((value) => SPUtil().rated());
+    } else {
+      final InAppReview inAppReview = InAppReview.instance;
+      if (await inAppReview.isAvailable()) {
+        inAppReview.requestReview().then((value) => SPUtil().rated());
+      }
+    }
+  }
+}
+
+class _Body extends StatefulWidget {
+  const _Body();
+
+  @override
+  State<_Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<_Body> with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 750),
+    vsync: this,
+  )..forward();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: <Widget>[
+          AnimatedBuilder(
+              animation: _controller,
+              child: HomeItem(
+                icon: Icons.person,
+                title: AppLocalizations.of(context)!.userGuessTitle,
+                subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15.0),
+                        ),
+                      ),
+                      builder: (context) => HomeItemMenu(children: [
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('3'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const UserGuessPage(
+                                    numLength: 3,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                              tag: '3',
+                            ),
+                            const Divider(),
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('4'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const UserGuessPage(
+                                    numLength: 4,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                              tag: '4',
+                            ),
+                            const Divider(),
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('5'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const UserGuessPage(
+                                    numLength: 5,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                              tag: '5',
+                            ),
+                          ]));
+                },
+              ),
+              builder: (BuildContext context, Widget? child) {
+                return FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: _controller,
+                    curve: Curves.easeIn,
+                  ),
+                  child: Transform(
+                      transform: Matrix4.translationValues(
+                          0, 100 * (_controller.value - 1), 0),
+                      child: child),
+                );
+              }),
+          AnimatedBuilder(
+              animation: _controller,
+              child: HomeItem(
+                icon: Icons.person,
+                title: AppLocalizations.of(context)!.userGuessLowerLuckTitle,
+                subtitle: AppLocalizations.of(context)!.userGuessSubtitle,
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15.0),
+                        ),
+                      ),
+                      builder: (context) => HomeItemMenu(children: [
+                            FutureBuilder(
+                                future: SPUtil().getBsetScore(tag: '3'),
+                                builder: (context, snap) {
+                                  return MenuAction(
+                                    disabled: !snap.hasData,
+                                    title: AppLocalizations.of(context)!
+                                        .xNumbers('3'),
+                                    action: () => Navigator.of(context)
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const UserGuessLowerLuckPage(
+                                          numLength: 3,
+                                        ),
+                                      ),
+                                    )
+                                        .then((value) {
+                                      if (value is bool && value == true) {
+                                        rateByApp(context);
+                                      }
+                                    }),
+                                    tag: '3HM',
+                                  );
+                                }),
+                            const Divider(),
+                            FutureBuilder(
+                                future: SPUtil().getBsetScore(tag: '4'),
+                                builder: (context, snap) {
+                                  return MenuAction(
+                                    disabled: !snap.hasData,
+                                    title: AppLocalizations.of(context)!
+                                        .xNumbers('4'),
+                                    action: () => Navigator.of(context)
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const UserGuessLowerLuckPage(
+                                          numLength: 4,
+                                        ),
+                                      ),
+                                    )
+                                        .then((value) {
+                                      if (value is bool && value == true) {
+                                        rateByApp(context);
+                                      }
+                                    }),
+                                    tag: '4HM',
+                                  );
+                                }),
+                            const Divider(),
+                            FutureBuilder(
+                                future: SPUtil().getBsetScore(tag: '5'),
+                                builder: (context, snap) {
+                                  return MenuAction(
+                                    disabled: !snap.hasData,
+                                    title: AppLocalizations.of(context)!
+                                        .xNumbers('5'),
+                                    action: () => Navigator.of(context)
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const UserGuessLowerLuckPage(
+                                          numLength: 5,
+                                        ),
+                                      ),
+                                    )
+                                        .then((value) {
+                                      if (value is bool && value == true) {
+                                        rateByApp(context);
+                                      }
+                                    }),
+                                    tag: '5HM',
+                                  );
+                                }),
+                          ]));
+                },
+              ),
+              builder: (BuildContext context, Widget? child) {
+                return FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: _controller,
+                    curve: Curves.easeIn,
+                  ),
+                  child: Transform(
+                      transform: Matrix4.translationValues(
+                          0, 100 * (_controller.value - 1), 0),
+                      child: child),
+                );
+              }),
+          AnimatedBuilder(
+              animation: _controller,
+              child: HomeItem(
+                icon: Icons.devices,
+                title: AppLocalizations.of(context)!.machineGuessTitle,
+                subtitle: AppLocalizations.of(context)!.machineGuessSubtitle,
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(15.0),
+                        ),
+                      ),
+                      builder: (context) => HomeItemMenu(children: [
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('3'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const MachineGuessPage(
+                                    numLength: 3,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                            ),
+                            const Divider(),
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('4'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const MachineGuessPage(
+                                    numLength: 4,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                            ),
+                            const Divider(),
+                            MenuAction(
+                              disabled: false,
+                              title:
+                                  AppLocalizations.of(context)!.xNumbers('5'),
+                              action: () => Navigator.of(context)
+                                  .push(
+                                MaterialPageRoute(
+                                  builder: (_) => const MachineGuessPage(
+                                    numLength: 5,
+                                  ),
+                                ),
+                              )
+                                  .then((value) {
+                                if (value is bool && value == true) {
+                                  rateByApp(context);
+                                }
+                              }),
+                            ),
+                          ]));
+                },
+              ),
+              builder: (BuildContext context, Widget? child) {
+                return FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: _controller,
+                    curve: Curves.easeIn,
+                  ),
+                  child: Transform(
+                      transform: Matrix4.translationValues(
+                          0, 100 * (_controller.value - 1), 0),
+                      child: child),
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
 
@@ -325,9 +690,11 @@ class HomeItem extends StatelessWidget {
                           Text(
                             title,
                             style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.grey.shade900,
-                            ),
+                                fontSize: 25,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.grey.shade900
+                                    : Colors.white),
                           ),
                           const SizedBox(
                             height: 5,
@@ -336,7 +703,10 @@ class HomeItem extends StatelessWidget {
                             subtitle,
                             style: TextStyle(
                               fontSize: 18,
-                              color: Colors.grey.shade700,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.grey.shade700
+                                  : Colors.grey.shade400,
                             ),
                           ),
                         ]))

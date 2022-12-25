@@ -41,5 +41,9 @@
   "websiteTitle": "ウェブサイト",
   "itemDisabled": "上記の基本モードのゲームをプレイしてロックを解除してください!",
   "resetBestRecordTitle": "最高記録を削除",
-  "resetBestRecordContent": "一度削除すると元に戻せません！"
+  "resetBestRecordContent": "一度削除すると元に戻せません！",
+  "rateTitle": "このアプリを評価する",
+  "rateContent": "星をクリックして評価します",
+  "commentHint": "貴重なコメントを残してください (任意)",
+  "submitBtn": "送った"
 }

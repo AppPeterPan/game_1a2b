@@ -11,11 +11,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightTheme = ThemeData.light().copyWith(
+      scaffoldBackgroundColor: const Color(0xFFE5EAEA),
+    );
+    final darkTheme = ThemeData.dark().copyWith();
     return MaterialApp(
       title: 'Game 1A2B',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.light,
+      theme: brightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
