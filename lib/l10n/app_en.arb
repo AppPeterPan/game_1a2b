@@ -230,5 +230,21 @@
     "resetBestRecordContent": "Once deleted, it cannot be recovered!",
     "@resetBestRecordContent": {
         "description": ""
+    },
+    "rateTitle": "Rate this App",
+    "@rateTitle": {
+        "description": ""
+    },
+    "rateContent": "Click on the stars to rate.",
+    "@rateContent": {
+        "description": ""
+    },
+    "commentHint": "Enter your comments. (optional)",
+    "@commentHint": {
+        "description": ""
+    },
+    "submitBtn": "Submit",
+    "@submitBtn": {
+        "description": ""
     }
 }

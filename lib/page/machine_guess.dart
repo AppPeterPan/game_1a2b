@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_1a2b/data.dart';
@@ -48,7 +49,6 @@ class MachineGuessPage extends StatelessWidget {
           return exit;
         },
         child: Scaffold(
-          backgroundColor: const Color(0xFFE5EAEA),
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.machineGuessTitle),
           ),
@@ -140,18 +140,29 @@ class _MachineGuessGame extends StatelessWidget {
                         child: Text(AppLocalizations.of(context)!.okBtn))
                   ],
                 );
-              }).then((value) => Navigator.of(context).pop());
+              }).then((value) => Navigator.of(context).pop(true));
         }
       },
       builder: (context, state) {
         if (state is MachineGuessInitState) {
           return Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                AppLocalizations.of(context)!.completePreparation,
-                style: const TextStyle(fontSize: 25),
-              ));
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(20),
+            child: AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  AppLocalizations.of(context)!.completePreparation,
+                  textStyle: const TextStyle(
+                    fontSize: 25,
+                  ),
+                  speed: const Duration(milliseconds: 50),
+                ),
+              ],
+              isRepeatingAnimation: false,
+              pause: const Duration(milliseconds: 2000),
+              displayFullTextOnTap: true,
+            ),
+          );
         } else {
           List<GuessData> guessRecord = [];
           if (state is MachineGuessGameState) {
@@ -170,7 +181,9 @@ class _MachineGuessGame extends StatelessWidget {
               itemCount: guessRecord.length,
               itemBuilder: (context, idx) {
                 return Card(
-                  color: Colors.grey,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.grey
+                      : Colors.grey.shade700,
                   child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),

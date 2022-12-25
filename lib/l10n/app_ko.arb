@@ -42,5 +42,9 @@
     "websiteTitle": "웹사이트 보기",
     "itemDisabled": "잠금을 해제하려면 위의 기본 모드 게임을 플레이하세요!",
     "resetBestRecordTitle": "최고의 기록 삭제",
-    "resetBestRecordContent": "한번 삭제하면 복구 불가!"
+    "resetBestRecordContent": "한번 삭제하면 복구 불가!",
+    "rateTitle": "이 앱을 평가 해주십시오",
+    "rateContent": "별표를 클릭하여 이 앱을 평가하세요.",
+    "commentHint": "소중한 의견을 남겨주세요(선택사항)",
+    "submitBtn": "보내다"
 }

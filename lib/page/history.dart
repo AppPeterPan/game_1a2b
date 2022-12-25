@@ -12,7 +12,6 @@ class HistoryPage extends StatelessWidget {
     final ScrollController _listController = ScrollController();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE5EAEA),
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.gameRecordTitle),
         actions: appBarActions,

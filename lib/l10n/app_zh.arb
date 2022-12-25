@@ -41,5 +41,9 @@
     "websiteTitle": "查看網站",
     "itemDisabled": "玩上方基本模式遊戲來解鎖！",
     "resetBestRecordTitle": "刪除最佳紀錄",
-    "resetBestRecordContent": "刪除後將無法復原!"
+    "resetBestRecordContent": "刪除後將無法復原!",
+    "rateTitle": "為這個App評分",
+    "rateContent": "點擊星星評分",
+    "commentHint": "留下你的寶貴意見 (選填)",
+    "submitBtn": "送出"
 }

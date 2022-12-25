@@ -30,7 +30,9 @@ class NumKeyboard extends StatelessWidget {
     return BlocProvider(
       create: (context) => NumKeyboardCubit(numLength: numLength),
       child: Container(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
+            : Colors.black,
         padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
